@@ -197,6 +197,7 @@
       "subtitle": "Start your bioinformatics journey today",
       "button": "Create Account",
       "link": "Sign Up",
+      "success": "Success! Check your email to confirm your account.",
       "benefits": {
         "title": "Join BioNXA and unlock:",
         "progress": "Track your progress and achievements",

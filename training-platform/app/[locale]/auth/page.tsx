@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Sparkles, Brain, Terminal } from 'lucide-react'
+import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Sparkles, Brain, Terminal, AlertCircle } from 'lucide-react'
+import { signUpWithEmail, signInWithEmail, signInWithOAuth } from '@/lib/supabase'
+import { trackSignUp, trackSignIn } from '@/components/GoogleAnalytics'
 
 export default function SignInPage() {
   const t = useTranslations()
@@ -12,6 +14,7 @@ export default function SignInPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -24,20 +27,64 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
-    // Simulate authentication
-    setTimeout(() => {
-      // In production, this would call your authentication API
-      localStorage.setItem('bionxa_user', JSON.stringify({
-        name: formData.name || formData.email.split('@')[0],
-        email: formData.email,
-        signedIn: true,
-        signedInAt: new Date().toISOString()
-      }))
-      
+    try {
+      if (isSignUp) {
+        // Sign up with Supabase
+        const { data, error: signUpError } = await signUpWithEmail(
+          formData.email,
+          formData.password,
+          formData.name
+        )
+
+        if (signUpError) throw signUpError
+
+        // Track signup event
+        trackSignUp('email')
+
+        // Show success message
+        alert(t('auth.signUp.success') || 'Check your email to confirm your account!')
+        setIsSignUp(false)
+      } else {
+        // Sign in with Supabase
+        const { data, error: signInError } = await signInWithEmail(
+          formData.email,
+          formData.password
+        )
+
+        if (signInError) throw signInError
+
+        // Track signin event
+        trackSignIn('email')
+
+        // Redirect to dashboard
+        router.push('/dashboard')
+      }
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed. Please try again.')
+    } finally {
       setIsLoading(false)
-      router.push('/')
-    }, 1500)
+    }
+  }
+
+  const handleOAuthSignIn = async (provider: 'google' | 'github' | 'apple') => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const { data, error: oauthError } = await signInWithOAuth(provider)
+      
+      if (oauthError) throw oauthError
+
+      // Track OAuth signin
+      trackSignIn(provider)
+      
+      // Supabase will handle the redirect automatically
+    } catch (err: any) {
+      setError(err.message || `${provider} sign-in failed. Please try again.`)
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,6 +132,17 @@ export default function SignInPage() {
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 bg-red-900/20 border border-red-700/30 rounded-lg p-4 flex items-start">
+              <AlertCircle className="w-5 h-5 text-red-400 mr-3 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-red-300 text-sm font-semibold mb-1">Authentication Error</p>
+                <p className="text-red-400 text-xs">{error}</p>
+              </div>
+            </div>
+          )}
+
           {/* Quick Sign In Options - Prominent */}
           <div className="space-y-3 mb-6">
             {/* Quick Registration Header */}
@@ -98,7 +156,11 @@ export default function SignInPage() {
             </div>
 
             {/* Google Sign In - Most Prominent */}
-            <button className="w-full bg-white hover:bg-gray-100 text-gray-900 font-semibold py-3.5 rounded-lg transition flex items-center justify-center space-x-3 border-2 border-gray-300 hover:border-primary-400 shadow-lg hover:shadow-xl">
+            <button 
+              onClick={() => handleOAuthSignIn('google')}
+              disabled={isLoading}
+              className="w-full bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 font-semibold py-3.5 rounded-lg transition flex items-center justify-center space-x-3 border-2 border-gray-300 hover:border-primary-400 shadow-lg hover:shadow-xl"
+            >
               <svg className="w-6 h-6" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -109,7 +171,11 @@ export default function SignInPage() {
             </button>
 
             {/* Apple Sign In - Prominent */}
-            <button className="w-full bg-black hover:bg-gray-900 text-white font-semibold py-3.5 rounded-lg transition flex items-center justify-center space-x-3 border-2 border-gray-800 hover:border-gray-700 shadow-lg hover:shadow-xl">
+            <button 
+              onClick={() => handleOAuthSignIn('apple')}
+              disabled={isLoading}
+              className="w-full bg-black hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-lg transition flex items-center justify-center space-x-3 border-2 border-gray-800 hover:border-gray-700 shadow-lg hover:shadow-xl"
+            >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
               </svg>
@@ -117,7 +183,11 @@ export default function SignInPage() {
             </button>
 
             {/* GitHub Sign In - Standard */}
-            <button className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center space-x-2">
+            <button 
+              onClick={() => handleOAuthSignIn('github')}
+              disabled={isLoading}
+              className="w-full bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center space-x-2"
+            >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
               </svg>
