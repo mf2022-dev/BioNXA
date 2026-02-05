@@ -5,9 +5,32 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   
+  // Check if Supabase is configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  // Protected routes that require authentication
+  const protectedPaths = ['/dashboard', '/profile', '/certificates']
+  const path = req.nextUrl.pathname
+  const isProtectedPath = protectedPaths.some(protectedPath => path.includes(protectedPath))
+  
+  // If Supabase is not configured, allow access but show message on protected routes
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // In demo mode without Supabase, redirect protected routes to auth page with a message
+    if (isProtectedPath) {
+      const redirectUrl = req.nextUrl.clone()
+      redirectUrl.pathname = '/auth'
+      redirectUrl.searchParams.set('redirect', path)
+      redirectUrl.searchParams.set('demo', 'true')
+      return NextResponse.redirect(redirectUrl)
+    }
+    return res
+  }
+  
+  // Create Supabase client with credentials
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
@@ -26,12 +49,6 @@ export async function middleware(req: NextRequest) {
   const {
     data: { session },
   } = await supabase.auth.getSession()
-
-  // Protected routes that require authentication
-  const protectedPaths = ['/dashboard', '/profile', '/certificates']
-  
-  const path = req.nextUrl.pathname
-  const isProtectedPath = protectedPaths.some(protectedPath => path.includes(protectedPath))
 
   // If accessing a protected route without a session, redirect to auth
   if (isProtectedPath && !session) {
