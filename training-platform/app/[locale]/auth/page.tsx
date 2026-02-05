@@ -16,7 +16,9 @@ export default function SignInPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    agreedToTerms: false,
+    agreedToMarketing: false
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -214,10 +216,51 @@ export default function SignInPage() {
               </div>
             )}
 
+            {/* Terms & Privacy Consent (Sign Up Only) */}
+            {isSignUp && (
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="termsConsent"
+                    name="agreedToTerms"
+                    checked={formData.agreedToTerms}
+                    onChange={(e) => setFormData({ ...formData, agreedToTerms: e.target.checked })}
+                    className="mt-1 w-4 h-4 rounded border-gray-600 bg-gray-800 text-primary-500 focus:ring-primary-500 focus:ring-offset-gray-900"
+                    required
+                  />
+                  <label htmlFor="termsConsent" className="ml-3 text-sm text-gray-300">
+                    {t('auth.agreeToTerms')}{' '}
+                    <Link href="/terms" className="text-primary-400 hover:text-primary-300 transition underline">
+                      {t('auth.termsOfService')}
+                    </Link>
+                    {' '}{t('auth.and')}{' '}
+                    <Link href="/privacy" className="text-primary-400 hover:text-primary-300 transition underline">
+                      {t('auth.privacyPolicy')}
+                    </Link>
+                    <span className="text-red-400 ml-1">*</span>
+                  </label>
+                </div>
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="marketingConsent"
+                    name="agreedToMarketing"
+                    checked={formData.agreedToMarketing}
+                    onChange={(e) => setFormData({ ...formData, agreedToMarketing: e.target.checked })}
+                    className="mt-1 w-4 h-4 rounded border-gray-600 bg-gray-800 text-primary-500 focus:ring-primary-500 focus:ring-offset-gray-900"
+                  />
+                  <label htmlFor="marketingConsent" className="ml-3 text-sm text-gray-400">
+                    {t('auth.agreeToMarketing')}
+                  </label>
+                </div>
+              </div>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || (isSignUp && !formData.agreedToTerms)}
               className="w-full bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition flex items-center justify-center space-x-2"
             >
               {isLoading ? (

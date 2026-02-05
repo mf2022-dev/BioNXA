@@ -220,6 +220,11 @@
     "haveAccount": "Already have an account?",
     "noAccount": "Don't have an account?",
     "loading": "Please wait...",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "agreeToMarketing": "I want to receive updates, tips, and exclusive offers from BioNXA (optional)"
   }
 }

@@ -220,6 +220,11 @@
     "haveAccount": "لديك حساب بالفعل؟",
     "noAccount": "ليس لديك حساب؟",
     "loading": "يرجى الانتظار...",
-    "signOut": "تسجيل الخروج"
+    "signOut": "تسجيل الخروج",
+    "agreeToTerms": "أوافق على",
+    "termsOfService": "شروط الخدمة",
+    "and": "و",
+    "privacyPolicy": "سياسة الخصوصية",
+    "agreeToMarketing": "أرغب في تلقي التحديثات والنصائح والعروض الحصرية من BioNXA (اختياري)"
   }
 }
