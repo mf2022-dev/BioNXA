@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { Play, Save, Download, Home, ChevronRight, AlertCircle, CheckCircle } from 'lucide-react'
+import { Play, Save, Download, Home, ChevronRight, AlertCircle, CheckCircle, Brain, Sparkles } from 'lucide-react'
+import AIAssistant from '@/components/AIAssistant'
+import AICodeAnalyzer from '@/components/AICodeAnalyzer'
 
 // Dynamically import Monaco Editor to avoid SSR issues
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
@@ -165,6 +167,10 @@ Workflow completed successfully!
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      {/* AI Components */}
+      <AIAssistant context="playground" currentCode={code} />
+      <AICodeAnalyzer code={code} language="groovy" />
+      
       {/* Navigation */}
       <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

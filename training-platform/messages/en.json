@@ -7,16 +7,16 @@
     "academy": "BioNXA Academy"
   },
   "hero": {
-    "welcome": "Welcome to the Future of Bioinformatics & Biotechnology Learning",
+    "welcome": "Welcome to the Future of AI-Powered Bioinformatics Learning",
     "title1": "Master Bioinformatics",
-    "title2": "Build AI-Powered",
-    "title3": "Solutions",
-    "description": "Learn to build {scalable}, {intelligent}, and {reproducible} bioinformatics workflows and biotechnology solutions through interactive tutorials and hands-on practice",
+    "title2": "With AI-Powered",
+    "title3": "Intelligence",
+    "description": "Learn to build {scalable}, {intelligent}, and {reproducible} bioinformatics workflows with AI assistance, real-time code analysis, and personalized learning paths",
     "scalable": "scalable",
     "intelligent": "AI-powered",
     "reproducible": "reproducible",
-    "startLearning": "Start Learning Journey",
-    "tryPlayground": "Try Interactive Playground"
+    "startLearning": "Start AI-Enhanced Learning",
+    "tryPlayground": "Try AI-Powered Playground"
   },
   "stats": {
     "tutorials": "Tutorials",
@@ -25,28 +25,28 @@
     "access": "Access"
   },
   "features": {
-    "title": "Why Choose Us?",
-    "subtitle": "Everything you need to become a bioinformatics and biotechnology expert",
+    "title": "Why Choose BioNXA?",
+    "subtitle": "AI-powered platform with everything you need to excel in bioinformatics and biotechnology",
     "interactive": {
-      "title": "Interactive Tutorials",
-      "description": "Step-by-step lessons covering bioinformatics fundamentals to advanced AI-driven computational biology with real-world examples",
-      "feature1": "Progressive Learning",
-      "feature2": "Hands-on Examples",
-      "feature3": "Real Workflows"
+      "title": "AI-Enhanced Tutorials",
+      "description": "Learn with intelligent tutoring, real-time code analysis, and personalized feedback powered by advanced AI",
+      "feature1": "Smart Learning Paths",
+      "feature2": "AI Code Review",
+      "feature3": "Real-time Assistance"
     },
     "playground": {
-      "title": "Code Playground",
-      "description": "Practice writing bioinformatics workflows and algorithms in an interactive editor with instant feedback and validation",
-      "feature1": "Monaco Editor",
-      "feature2": "Live Preview",
-      "feature3": "Syntax Highlighting"
+      "title": "AI-Powered Playground",
+      "description": "Write code with AI suggestions, automatic error detection, and intelligent optimization recommendations",
+      "feature1": "AI Code Analysis",
+      "feature2": "Smart Suggestions",
+      "feature3": "Auto-completion"
     },
     "progress": {
-      "title": "Track Progress",
-      "description": "Monitor your learning journey, complete challenges, and earn recognition as you master new skills",
-      "feature1": "Progress Tracking",
-      "feature2": "Achievements",
-      "feature3": "Certificates"
+      "title": "Personalized Learning",
+      "description": "AI adapts to your pace, recommends next steps, and tracks your progress with intelligent insights",
+      "feature1": "AI Recommendations",
+      "feature2": "Smart Progress",
+      "feature3": "Adaptive Paths"
     }
   },
   "learningPath": {
@@ -130,5 +130,26 @@
     "community": "Community",
     "videos": "Video Tutorials",
     "pipelines": "Pipeline Collections"
+  },
+  "aiFeatures": {
+    "badge": "AI-Powered Platform",
+    "title": "Learn with Artificial Intelligence",
+    "subtitle": "Experience the future of bioinformatics education with cutting-edge AI technology",
+    "assistant": {
+      "title": "AI Learning Assistant",
+      "description": "24/7 intelligent chatbot that answers questions, explains concepts, and guides your learning journey"
+    },
+    "codeAnalysis": {
+      "title": "Real-time Code Analysis",
+      "description": "Instant feedback on your code with AI-powered suggestions for optimization, best practices, and error detection"
+    },
+    "personalized": {
+      "title": "Personalized Learning Paths",
+      "description": "AI adapts to your skill level and learning pace, recommending the perfect next steps for your journey"
+    },
+    "smartHelp": {
+      "title": "Context-Aware Help",
+      "description": "Get instant, relevant answers based on what you're currently learning or coding"
+    }
   }
 }

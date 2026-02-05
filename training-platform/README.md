@@ -1,6 +1,15 @@
 # BioNXA Learning Platform
 
-An interactive web-based training platform for bioinformatics, biotechnology, and AI-driven computational biology.
+An AI-powered interactive web-based training platform for bioinformatics, biotechnology, and AI-driven computational biology.
+
+## 🤖 AI-Powered Features
+
+- **AI Learning Assistant**: 24/7 intelligent chatbot for instant help and guidance
+- **Real-time Code Analysis**: AI-powered code review with smart suggestions
+- **Personalized Learning Paths**: Adaptive recommendations based on your progress
+- **Context-Aware Help**: Intelligent assistance that understands your current task
+- **Auto Error Detection**: AI automatically identifies and explains issues
+- **Smart Code Completion**: Intelligent suggestions as you code
 
 ## 🚀 Features
 

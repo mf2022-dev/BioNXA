@@ -8,7 +8,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { 
   BookOpen, Code, Play, Award, Menu, X, Home, FileText, 
   Sparkles, Zap, Target, Users, TrendingUp, Check, 
-  ArrowRight, Star, Dna, Microscope, Workflow
+  ArrowRight, Star, Dna, Microscope, Workflow, Brain, MessageSquare, Cpu, Lightbulb
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -193,6 +193,97 @@ export default function HomePage() {
             ]}
             isRTL={isRTL}
           />
+        </div>
+      </section>
+
+      {/* AI Features Section */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-6 animate-pulse">
+            <Brain className={`w-4 h-4 text-accent-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            <span className="text-sm font-semibold text-accent-300">{t('aiFeatures.badge')}</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <span className="gradient-text-simple">{t('aiFeatures.title')}</span>
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            {t('aiFeatures.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <MessageSquare className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('aiFeatures.assistant.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('aiFeatures.assistant.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Cpu className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('aiFeatures.codeAnalysis.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('aiFeatures.codeAnalysis.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Brain className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('aiFeatures.personalized.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('aiFeatures.personalized.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Lightbulb className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('aiFeatures.smartHelp.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('aiFeatures.smartHelp.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Try AI CTA */}
+        <div className="mt-12 text-center">
+          <Link href="/playground" className="btn-primary inline-flex items-center">
+            <Brain className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} animate-pulse`} />
+            <span>Experience AI-Powered Learning</span>
+            <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
+          </Link>
         </div>
       </section>
 
