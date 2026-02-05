@@ -8,7 +8,8 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { 
   BookOpen, Code, Play, Award, Menu, X, Home, FileText, 
   Sparkles, Zap, Target, Users, TrendingUp, Check, 
-  ArrowRight, Star, Dna, Microscope, Workflow, Brain, MessageSquare, Cpu, Lightbulb
+  ArrowRight, Star, Dna, Microscope, Workflow, Brain, MessageSquare, Cpu, Lightbulb,
+  Terminal, Server, FileCode
 } from 'lucide-react'
 
 export default function HomePage() {
@@ -305,6 +306,16 @@ export default function HomePage() {
         <div className="space-y-6">
           <PathStep 
             number={1} 
+            title={t('learningPath.linux.title')}
+            description={t('learningPath.linux.description')}
+            icon={<Terminal className="w-6 h-6" />}
+            color="accent"
+            duration={t('learningPath.linux.duration')}
+            href="/tutorials"
+            isRTL={isRTL}
+          />
+          <PathStep 
+            number={2} 
             title={t('learningPath.basics.title')}
             description={t('learningPath.basics.description')}
             icon={<Workflow className="w-6 h-6" />}
@@ -314,7 +325,7 @@ export default function HomePage() {
             isRTL={isRTL}
           />
           <PathStep 
-            number={2} 
+            number={3} 
             title={t('learningPath.bioinformatics.title')}
             description={t('learningPath.bioinformatics.description')}
             icon={<Dna className="w-6 h-6" />}
@@ -324,25 +335,116 @@ export default function HomePage() {
             isRTL={isRTL}
           />
           <PathStep 
-            number={3} 
+            number={4} 
             title={t('learningPath.advanced.title')}
             description={t('learningPath.advanced.description')}
-            icon={<Microscope className="w-6 h-6" />}
-            color="accent"
+            icon={<Brain className="w-6 h-6" />}
+            color="primary"
             duration={t('learningPath.advanced.duration')}
             href="/tutorials"
             isRTL={isRTL}
           />
           <PathStep 
-            number={4} 
+            number={5} 
             title={t('learningPath.projects.title')}
             description={t('learningPath.projects.description')}
             icon={<Star className="w-6 h-6" />}
-            color="primary"
+            color="secondary"
             duration={t('learningPath.projects.duration')}
             href="/tutorials"
             isRTL={isRTL}
           />
+        </div>
+      </section>
+
+      {/* Linux Features Section */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-6">
+            <Terminal className={`w-4 h-4 text-green-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            <span className="text-sm font-semibold text-green-300">{t('linuxFeatures.badge')}</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <span className="gradient-text-simple">{t('linuxFeatures.title')}</span>
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            {t('linuxFeatures.subtitle')}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Terminal className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('linuxFeatures.terminal.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('linuxFeatures.terminal.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <FileCode className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('linuxFeatures.scripting.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('linuxFeatures.scripting.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Code className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('linuxFeatures.tools.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('linuxFeatures.tools.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-glow card group">
+            <div className="flex items-start space-x-4">
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
+                <Server className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
+                  {t('linuxFeatures.servers.title')}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {t('linuxFeatures.servers.description')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Linux CTA */}
+        <div className="mt-12 text-center">
+          <Link href="/tutorials" className="btn-primary inline-flex items-center">
+            <Terminal className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            <span>Start Linux Training</span>
+            <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
+          </Link>
         </div>
       </section>
 

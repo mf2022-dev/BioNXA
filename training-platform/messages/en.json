@@ -52,7 +52,12 @@
   "learningPath": {
     "badge": "Your Learning Journey",
     "title": "Structured Learning Path",
-    "subtitle": "From beginner to expert in bioinformatics, biotechnology, and AI",
+    "subtitle": "From beginner to expert in bioinformatics, biotechnology, Linux, and AI",
+    "linux": {
+      "title": "Linux & Command Line",
+      "description": "Master Linux fundamentals, shell scripting, command-line tools essential for bioinformatics",
+      "duration": "5 tutorials · 4 hours"
+    },
     "basics": {
       "title": "Bioinformatics Fundamentals",
       "description": "Understand computational biology, data pipelines, genomic analysis, and workflow automation",
@@ -86,12 +91,16 @@
   },
   "tutorials": {
     "title": "Learning Tutorials",
-    "subtitle": "Comprehensive courses to take you from beginner to expert in bioinformatics, biotechnology, and AI-driven computational biology",
+    "subtitle": "Comprehensive courses from beginner to expert in bioinformatics, biotechnology, Linux, and AI-driven computational biology",
     "beginner": "Beginner",
     "intermediate": "Intermediate",
     "advanced": "Advanced",
     "lessons": "lessons",
     "categories": {
+      "linux": {
+        "title": "Linux & Command Line",
+        "description": "Essential Linux skills for bioinformatics"
+      },
       "basics": {
         "title": "Bioinformatics Fundamentals",
         "description": "Get started with computational biology"
@@ -150,6 +159,27 @@
     "smartHelp": {
       "title": "Context-Aware Help",
       "description": "Get instant, relevant answers based on what you're currently learning or coding"
+    }
+  },
+  "linuxFeatures": {
+    "badge": "Linux for Bioinformatics",
+    "title": "Master Linux Command Line",
+    "subtitle": "Essential skills every bioinformatician needs - from basics to advanced scripting",
+    "terminal": {
+      "title": "Interactive Linux Terminal",
+      "description": "Practice real Linux commands in a safe, simulated environment with instant feedback"
+    },
+    "scripting": {
+      "title": "Shell Scripting & Automation",
+      "description": "Learn Bash scripting to automate workflows and build efficient bioinformatics pipelines"
+    },
+    "tools": {
+      "title": "Bioinformatics CLI Tools",
+      "description": "Master command-line tools: grep, awk, sed, samtools, bcftools, and more"
+    },
+    "servers": {
+      "title": "Server Management",
+      "description": "Work with remote servers, HPC clusters, and cloud computing environments"
     }
   }
 }

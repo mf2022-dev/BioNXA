@@ -13,16 +13,25 @@ An AI-powered interactive web-based training platform for bioinformatics, biotec
 
 ## 🚀 Features
 
-- **Interactive Tutorials**: Step-by-step lessons covering Nextflow basics to advanced topics
-- **Code Playground**: Practice writing Nextflow workflows with an integrated code editor
+- **Interactive Tutorials**: Step-by-step lessons covering Linux, bioinformatics, biotechnology, and AI topics
+- **Linux Command Line Training**: Essential Linux skills every bioinformatician needs
+- **Code Playground**: Practice writing workflows with an integrated code editor
 - **Bioinformatics Examples**: Real-world examples including RNA-seq, variant calling, and QC pipelines
 - **Progress Tracking**: Monitor your learning journey and complete challenges
 - **Curated Resources**: Access to documentation, videos, and community resources
 - **Modern UI**: Built with Next.js, React, and Tailwind CSS
+- **Bilingual Support**: Full platform available in English and Arabic
 
 ## 📚 Learning Paths
 
-### 1. Bioinformatics Fundamentals
+### 1. Linux & Command Line
+- Introduction to Linux for Bioinformatics
+- Essential Unix Commands
+- Shell Scripting and Automation
+- Working with Remote Servers and HPC
+- Bioinformatics CLI Tools (grep, awk, sed, samtools)
+
+### 2. Bioinformatics Fundamentals
 - Introduction to Computational Biology
 - Data Processing Pipelines
 - Genomic Data Analysis
