@@ -1,221 +1,121 @@
 'use client'
 
-import Link from 'next/link'
-import { Home, ChevronRight, BookOpen, Video, FileText, Users, ExternalLink, Code, Database } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import ParticlesBackground from '@/components/animations/ParticlesBackground'
+import ScrollReveal from '@/components/ui/ScrollReveal'
+import { BookOpen, ExternalLink, FileText, Video, Users, Code, Database } from 'lucide-react'
 
-const resources = {
-  documentation: [
-    {
-      title: 'Official Nextflow Documentation',
-      description: 'Comprehensive guide to all Nextflow features',
-      url: 'https://nextflow.io/docs/latest/',
-      icon: <FileText className="w-6 h-6" />
-    },
-    {
-      title: 'Nextflow Patterns',
-      description: 'Common workflow patterns and best practices',
-      url: 'https://nextflow-io.github.io/patterns/',
-      icon: <Code className="w-6 h-6" />
-    },
-    {
-      title: 'nf-core Guidelines',
-      description: 'Community standards for pipeline development',
-      url: 'https://nf-co.re/docs/',
-      icon: <BookOpen className="w-6 h-6" />
-    }
-  ],
-  community: [
-    {
-      title: 'Nextflow Community Forum',
-      description: 'Ask questions and get help from the community',
-      url: 'https://community.seqera.io',
-      icon: <Users className="w-6 h-6" />
-    },
-    {
-      title: 'Nextflow Slack',
-      description: 'Join real-time discussions with Nextflow users',
-      url: 'https://www.nextflow.io/slack-invite.html',
-      icon: <Users className="w-6 h-6" />
-    },
-    {
-      title: 'GitHub Repository',
-      description: 'Source code and issue tracking',
-      url: 'https://github.com/nextflow-io/nextflow',
-      icon: <Code className="w-6 h-6" />
-    }
-  ],
-  videos: [
-    {
-      title: 'Nextflow YouTube Channel',
-      description: 'Video tutorials and conference talks',
-      url: 'https://www.youtube.com/@Nextflow',
-      icon: <Video className="w-6 h-6" />
-    },
-    {
-      title: 'nf-core YouTube',
-      description: 'Community pipeline presentations',
-      url: 'https://www.youtube.com/@nf-core',
-      icon: <Video className="w-6 h-6" />
-    }
-  ],
-  pipelines: [
-    {
-      title: 'nf-core Pipelines',
-      description: 'Collection of 100+ production-ready pipelines',
-      url: 'https://nf-co.re/pipelines',
-      icon: <Database className="w-6 h-6" />
-    },
-    {
-      title: 'Nextflow Hub',
-      description: 'Discover and share Nextflow pipelines',
-      url: 'https://www.nextflow.io/blog/2020/introducing-nextflow-hub.html',
-      icon: <Database className="w-6 h-6" />
-    }
-  ]
-}
+const sections = [
+  {
+    title: 'Documentation', titleAr: 'التوثيق', color: 'var(--a1)',
+    items: [
+      { title: 'Official Nextflow Docs', desc: 'Comprehensive guide to all features', url: 'https://nextflow.io/docs/latest/' },
+      { title: 'Nextflow Patterns', desc: 'Common workflow patterns and best practices', url: 'https://nextflow-io.github.io/patterns/' },
+      { title: 'nf-core Guidelines', desc: 'Community standards for pipelines', url: 'https://nf-co.re/docs/' },
+    ]
+  },
+  {
+    title: 'Community', titleAr: 'المجتمع', color: 'var(--a2)',
+    items: [
+      { title: 'Nextflow Forum', desc: 'Ask questions and get community help', url: 'https://community.seqera.io' },
+      { title: 'Nextflow Slack', desc: 'Real-time discussions with users', url: 'https://www.nextflow.io/slack-invite.html' },
+      { title: 'GitHub Repository', desc: 'Source code and issue tracking', url: 'https://github.com/nextflow-io/nextflow' },
+    ]
+  },
+  {
+    title: 'Video Tutorials', titleAr: 'فيديوهات تعليمية', color: 'var(--a3)',
+    items: [
+      { title: 'Nextflow YouTube', desc: 'Video tutorials and conference talks', url: 'https://www.youtube.com/@Nextflow' },
+      { title: 'nf-core YouTube', desc: 'Community pipeline presentations', url: 'https://www.youtube.com/@nf-core' },
+    ]
+  },
+  {
+    title: 'Pipeline Collections', titleAr: 'مجموعات خطوط الأنابيب', color: 'var(--a4)',
+    items: [
+      { title: 'nf-core Pipelines', desc: '100+ production-ready pipelines', url: 'https://nf-co.re/pipelines' },
+      { title: 'Nextflow Hub', desc: 'Discover and share pipelines', url: 'https://www.nextflow.io/blog/2020/introducing-nextflow-hub.html' },
+    ]
+  },
+]
 
-const bioinformaticsTopics = [
-  {
-    title: 'RNA-seq Analysis',
-    description: 'Learn RNA sequencing data analysis workflows',
-    topics: ['Quality Control', 'Alignment', 'Quantification', 'Differential Expression']
-  },
-  {
-    title: 'Variant Calling',
-    description: 'Discover variants in genomic data',
-    topics: ['Alignment', 'Variant Detection', 'Annotation', 'Filtering']
-  },
-  {
-    title: 'Metagenomics',
-    description: 'Analyze microbial communities',
-    topics: ['Taxonomic Classification', 'Assembly', 'Binning', 'Annotation']
-  },
-  {
-    title: 'Single-cell Analysis',
-    description: 'Process single-cell sequencing data',
-    topics: ['Cell Calling', 'Normalization', 'Clustering', 'Annotation']
-  }
+const bioTopics = [
+  { title: 'RNA-seq Analysis', titleAr: 'تحليل RNA-seq', desc: 'Learn RNA sequencing data analysis', tags: ['Quality Control', 'Alignment', 'Quantification', 'Differential Expression'] },
+  { title: 'Variant Calling', titleAr: 'استدعاء المتغيرات', desc: 'Discover variants in genomic data', tags: ['Alignment', 'Variant Detection', 'Annotation', 'Filtering'] },
+  { title: 'Metagenomics', titleAr: 'الميتاجينوميكس', desc: 'Analyze microbial communities', tags: ['Classification', 'Assembly', 'Binning', 'Annotation'] },
+  { title: 'Single-cell Analysis', titleAr: 'تحليل الخلية الواحدة', desc: 'Process single-cell sequencing data', tags: ['Cell Calling', 'Normalization', 'Clustering', 'Annotation'] },
 ]
 
 export default function ResourcesPage() {
+  const locale = useLocale()
+  const isRTL = locale === 'ar'
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {/* Navigation */}
-      <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 space-x-6">
-            <Link href="/" className="flex items-center space-x-2 text-primary hover:text-secondary transition">
-              <Home className="w-5 h-5" />
-              <span>Home</span>
-            </Link>
-            <ChevronRight className="w-4 h-4 text-gray-500" />
-            <span className="font-semibold">Resources</span>
+    <div className="min-h-screen relative">
+      <ParticlesBackground />
+      <Navbar />
+
+      <div className="max-w-6xl mx-auto px-6 pt-28 pb-12">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="section-tag mb-4 mx-auto" style={{ color: 'var(--a2)' }}>
+              <BookOpen className="w-3 h-3 mr-1" />
+              {isRTL ? 'الموارد' : 'Resources'}
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--t1)' }}>
+              {isRTL ? 'موارد التعلم' : 'Learning Resources'}
+            </h1>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
+              {isRTL ? 'مجموعة منسقة من أفضل الموارد لتعلم المعلوماتية الحيوية و Nextflow' : 'Curated collection of documentation, tutorials, and community resources to help you master Nextflow'}
+            </p>
           </div>
-        </div>
-      </nav>
+        </ScrollReveal>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Learning Resources</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Curated collection of documentation, tutorials, and community resources to help you master Nextflow
-          </p>
-        </div>
-
-        {/* Documentation */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 flex items-center space-x-3">
-            <FileText className="w-8 h-8 text-primary" />
-            <span>Documentation</span>
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {resources.documentation.map((resource, index) => (
-              <ResourceCard key={index} resource={resource} />
-            ))}
-          </div>
-        </section>
-
-        {/* Community */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 flex items-center space-x-3">
-            <Users className="w-8 h-8 text-primary" />
-            <span>Community</span>
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {resources.community.map((resource, index) => (
-              <ResourceCard key={index} resource={resource} />
-            ))}
-          </div>
-        </section>
-
-        {/* Videos */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 flex items-center space-x-3">
-            <Video className="w-8 h-8 text-primary" />
-            <span>Video Tutorials</span>
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {resources.videos.map((resource, index) => (
-              <ResourceCard key={index} resource={resource} />
-            ))}
-          </div>
-        </section>
-
-        {/* Pipelines */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 flex items-center space-x-3">
-            <Database className="w-8 h-8 text-primary" />
-            <span>Pipeline Collections</span>
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {resources.pipelines.map((resource, index) => (
-              <ResourceCard key={index} resource={resource} />
-            ))}
-          </div>
-        </section>
-
-        {/* Bioinformatics Topics */}
-        <section>
-          <h2 className="text-3xl font-bold mb-6">Bioinformatics Topics</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {bioinformaticsTopics.map((topic, index) => (
-              <div key={index} className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-                <h3 className="text-xl font-semibold mb-3">{topic.title}</h3>
-                <p className="text-gray-300 mb-4">{topic.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {topic.topics.map((t, i) => (
-                    <span key={i} className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm">
-                      {t}
-                    </span>
-                  ))}
-                </div>
+        {sections.map((section, si) => (
+          <ScrollReveal key={si} delay={si * 80}>
+            <div className="mb-10">
+              <h2 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`} style={{ color: 'var(--t1)' }}>
+                <span style={{ color: section.color }}>{isRTL ? section.titleAr : section.title}</span>
+              </h2>
+              <div className="grid md:grid-cols-3 gap-4">
+                {section.items.map((item, i) => (
+                  <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" className="card-glass group cursor-pointer h-full block">
+                    <div className={`flex items-center justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <h3 className="font-semibold text-sm group-hover:gradient-text-simple transition-all" style={{ color: 'var(--t1)' }}>{item.title}</h3>
+                      <ExternalLink className="w-3 h-3 text-subtle opacity-0 group-hover:opacity-100 transition" />
+                    </div>
+                    <p className="text-muted text-xs leading-relaxed">{item.desc}</p>
+                  </a>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-      </div>
-    </div>
-  )
-}
+            </div>
+          </ScrollReveal>
+        ))}
 
-function ResourceCard({ resource }: { resource: any }) {
-  return (
-    <a 
-      href={resource.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-primary transition transform hover:scale-105 block"
-    >
-      <div className="flex items-start space-x-4">
-        <div className="text-primary">{resource.icon}</div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-semibold">{resource.title}</h3>
-            <ExternalLink className="w-4 h-4 text-gray-400" />
+        <ScrollReveal>
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-6" style={{ color: 'var(--t1)' }}>
+              {isRTL ? 'مواضيع المعلوماتية الحيوية' : 'Bioinformatics Topics'}
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {bioTopics.map((topic, i) => (
+                <div key={i} className="card-glass">
+                  <h3 className="font-semibold mb-2" style={{ color: 'var(--t1)' }}>{isRTL ? topic.titleAr : topic.title}</h3>
+                  <p className="text-muted text-sm mb-3">{topic.desc}</p>
+                  <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    {topic.tags.map((tag, j) => (
+                      <span key={j} className="text-xs px-2 py-1 rounded-full" style={{ background: 'var(--a1-bg)', color: 'var(--a1)', border: '1px solid var(--a1)20' }}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <p className="text-gray-300 text-sm">{resource.description}</p>
-        </div>
+        </ScrollReveal>
       </div>
-    </a>
+
+      <Footer />
+    </div>
   )
 }

@@ -1,8 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { BookOpen, ChevronRight, CheckCircle, Circle, Code, Home } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import ParticlesBackground from '@/components/animations/ParticlesBackground'
+import ScrollReveal from '@/components/ui/ScrollReveal'
+import { BookOpen, ChevronRight, CheckCircle, Circle, Code, Terminal, Dna, Brain, Workflow, Microscope } from 'lucide-react'
 
 interface Tutorial {
   id: string
@@ -17,193 +21,132 @@ interface Tutorial {
 const tutorialCategories = {
   basics: {
     title: 'Nextflow Basics',
+    titleAr: 'أساسيات Nextflow',
+    icon: <Workflow className="w-5 h-5" />,
+    color: 'var(--a1)',
     description: 'Get started with Nextflow fundamentals',
+    descriptionAr: 'ابدأ بأساسيات Nextflow',
     tutorials: [
-      {
-        id: 'intro',
-        title: 'Introduction to Nextflow',
-        description: 'Learn what Nextflow is and why it\'s essential for modern bioinformatics',
-        duration: '30 min',
-        level: 'beginner' as const,
-        completed: false,
-        lessons: 5
-      },
-      {
-        id: 'processes',
-        title: 'Processes and Tasks',
-        description: 'Understand how to define and execute computational tasks',
-        duration: '45 min',
-        level: 'beginner' as const,
-        completed: false,
-        lessons: 6
-      },
-      {
-        id: 'channels',
-        title: 'Channels and Data Flow',
-        description: 'Master dataflow programming with channels',
-        duration: '1 hour',
-        level: 'beginner' as const,
-        completed: false,
-        lessons: 7
-      },
-      {
-        id: 'operators',
-        title: 'Channel Operators',
-        description: 'Transform and manipulate data using powerful operators',
-        duration: '1 hour',
-        level: 'intermediate' as const,
-        completed: false,
-        lessons: 8
-      }
+      { id: 'intro', title: 'Introduction to Nextflow', titleAr: 'مقدمة في Nextflow', description: 'Learn what Nextflow is and why it\'s essential for modern bioinformatics', descriptionAr: 'تعرف على Nextflow ولماذا هو ضروري للمعلوماتية الحيوية', duration: '30 min', level: 'beginner' as const, completed: false, lessons: 5 },
+      { id: 'processes', title: 'Processes and Tasks', titleAr: 'العمليات والمهام', description: 'Understand how to define and execute computational tasks', descriptionAr: 'تعلم كيفية تعريف وتنفيذ المهام الحسابية', duration: '45 min', level: 'beginner' as const, completed: false, lessons: 6 },
+      { id: 'channels', title: 'Channels and Data Flow', titleAr: 'القنوات وتدفق البيانات', description: 'Master dataflow programming with channels', descriptionAr: 'أتقن برمجة تدفق البيانات باستخدام القنوات', duration: '1 hour', level: 'beginner' as const, completed: false, lessons: 7 },
+      { id: 'operators', title: 'Channel Operators', titleAr: 'مشغلات القنوات', description: 'Transform and manipulate data using powerful operators', descriptionAr: 'حوّل البيانات ومعالجتها باستخدام المشغلات', duration: '1 hour', level: 'intermediate' as const, completed: false, lessons: 8 },
     ]
   },
   bioinformatics: {
     title: 'Bioinformatics Workflows',
+    titleAr: 'سير عمل المعلوماتية الحيوية',
+    icon: <Dna className="w-5 h-5" />,
+    color: 'var(--a2)',
     description: 'Build real-world genomics pipelines',
+    descriptionAr: 'ابنِ خطوط أنابيب جينومية حقيقية',
     tutorials: [
-      {
-        id: 'qc',
-        title: 'Quality Control Pipeline',
-        description: 'Build a FastQC-based quality control workflow',
-        duration: '1 hour',
-        level: 'intermediate' as const,
-        completed: false,
-        lessons: 6
-      },
-      {
-        id: 'rnaseq',
-        title: 'RNA-seq Analysis',
-        description: 'Create a complete RNA-seq quantification pipeline',
-        duration: '2 hours',
-        level: 'intermediate' as const,
-        completed: false,
-        lessons: 10
-      },
-      {
-        id: 'variant',
-        title: 'Variant Calling',
-        description: 'Develop a GATK-based variant calling workflow',
-        duration: '2 hours',
-        level: 'advanced' as const,
-        completed: false,
-        lessons: 12
-      }
+      { id: 'qc', title: 'Quality Control Pipeline', titleAr: 'خط أنابيب مراقبة الجودة', description: 'Build a FastQC-based quality control workflow', descriptionAr: 'ابنِ سير عمل مراقبة الجودة باستخدام FastQC', duration: '1 hour', level: 'intermediate' as const, completed: false, lessons: 6 },
+      { id: 'rnaseq', title: 'RNA-seq Analysis', titleAr: 'تحليل RNA-seq', description: 'Create a complete RNA-seq quantification pipeline', descriptionAr: 'أنشئ خط أنابيب كامل لتحليل RNA-seq', duration: '2 hours', level: 'intermediate' as const, completed: false, lessons: 10 },
+      { id: 'variant', title: 'Variant Calling', titleAr: 'استدعاء المتغيرات', description: 'Develop a GATK-based variant calling workflow', descriptionAr: 'طوّر سير عمل استدعاء المتغيرات باستخدام GATK', duration: '2 hours', level: 'advanced' as const, completed: false, lessons: 12 },
     ]
   },
   advanced: {
     title: 'Advanced Topics',
+    titleAr: 'مواضيع متقدمة',
+    icon: <Brain className="w-5 h-5" />,
+    color: 'var(--a3)',
     description: 'Master advanced Nextflow features',
+    descriptionAr: 'أتقن ميزات Nextflow المتقدمة',
     tutorials: [
-      {
-        id: 'containers',
-        title: 'Containers and Conda',
-        description: 'Manage software dependencies with containers and Conda',
-        duration: '1.5 hours',
-        level: 'advanced' as const,
-        completed: false,
-        lessons: 8
-      },
-      {
-        id: 'cloud',
-        title: 'Cloud Deployment',
-        description: 'Deploy workflows on AWS, Azure, and Google Cloud',
-        duration: '2 hours',
-        level: 'advanced' as const,
-        completed: false,
-        lessons: 9
-      },
-      {
-        id: 'optimization',
-        title: 'Performance Optimization',
-        description: 'Optimize workflows for speed and resource efficiency',
-        duration: '1.5 hours',
-        level: 'advanced' as const,
-        completed: false,
-        lessons: 7
-      }
+      { id: 'containers', title: 'Containers and Conda', titleAr: 'الحاويات و Conda', description: 'Manage software dependencies with containers and Conda', descriptionAr: 'أدِر تبعيات البرمجيات باستخدام الحاويات و Conda', duration: '1.5 hours', level: 'advanced' as const, completed: false, lessons: 8 },
+      { id: 'cloud', title: 'Cloud Deployment', titleAr: 'النشر السحابي', description: 'Deploy workflows on AWS, Azure, and Google Cloud', descriptionAr: 'انشر سير العمل على AWS و Azure و Google Cloud', duration: '2 hours', level: 'advanced' as const, completed: false, lessons: 9 },
+      { id: 'optimization', title: 'Performance Optimization', titleAr: 'تحسين الأداء', description: 'Optimize workflows for speed and resource efficiency', descriptionAr: 'حسّن سير العمل للسرعة وكفاءة الموارد', duration: '1.5 hours', level: 'advanced' as const, completed: false, lessons: 7 },
     ]
   }
 }
 
 export default function TutorialsPage() {
+  const locale = useLocale()
+  const t = useTranslations()
+  const isRTL = locale === 'ar'
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {/* Navigation */}
-      <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 space-x-6">
-            <Link href="/" className="flex items-center space-x-2 text-primary hover:text-secondary transition">
-              <Home className="w-5 h-5" />
-              <span>Home</span>
-            </Link>
-            <ChevronRight className="w-4 h-4 text-gray-500" />
-            <span className="font-semibold">Tutorials</span>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen relative">
+      <ParticlesBackground />
+      <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Learning Tutorials</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Comprehensive courses to take you from beginner to expert in Nextflow and bioinformatics workflow development
-          </p>
-        </div>
-
-        {/* Tutorial Categories */}
-        <div className="space-y-12">
-          {Object.entries(tutorialCategories).map(([key, category]) => (
-            <div key={key}>
-              <div className="mb-6">
-                <h2 className="text-3xl font-bold mb-2">{category.title}</h2>
-                <p className="text-gray-300">{category.description}</p>
-              </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                {category.tutorials.map((tutorial) => (
-                  <TutorialCard key={tutorial.id} tutorial={tutorial} category={key} />
-                ))}
-              </div>
+      <div className="max-w-6xl mx-auto px-6 pt-28 pb-12">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="section-tag mb-4 mx-auto" style={{ color: 'var(--a1)' }}>
+              <BookOpen className="w-3 h-3 mr-1" />
+              {isRTL ? 'الدورات التعليمية' : 'Learning Tutorials'}
             </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--t1)' }}>
+              {isRTL ? 'ابدأ رحلة التعلم' : 'Start Your Learning Journey'}
+            </h1>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
+              {isRTL
+                ? 'دورات شاملة تأخذك من المبتدئ إلى الخبير في Nextflow وتطوير سير عمل المعلوماتية الحيوية'
+                : 'Comprehensive courses to take you from beginner to expert in Nextflow and bioinformatics workflow development'}
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="space-y-12">
+          {Object.entries(tutorialCategories).map(([key, category], catIdx) => (
+            <ScrollReveal key={key} delay={catIdx * 100}>
+              <div>
+                <div className={`flex items-center gap-3 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className="icon-box" style={{ background: `${category.color}15`, border: `1px solid ${category.color}25`, color: category.color }}>
+                    {category.icon}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold" style={{ color: 'var(--t1)' }}>
+                      {isRTL ? category.titleAr : category.title}
+                    </h2>
+                    <p className="text-muted text-sm">{isRTL ? category.descriptionAr : category.description}</p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {category.tutorials.map((tutorial: any) => (
+                    <TutorialCard key={tutorial.id} tutorial={tutorial} category={key} isRTL={isRTL} locale={locale} />
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }
 
-function TutorialCard({ tutorial, category }: { tutorial: Tutorial; category: string }) {
-  const levelColors = {
-    beginner: 'bg-green-500',
-    intermediate: 'bg-yellow-500',
-    advanced: 'bg-red-500'
-  }
-
+function TutorialCard({ tutorial, category, isRTL, locale }: { tutorial: any; category: string; isRTL: boolean; locale: string }) {
   return (
-    <Link href={`/tutorials/${category}/${tutorial.id}`}>
-      <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-primary transition transform hover:scale-105 cursor-pointer h-full">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            {tutorial.completed ? (
-              <CheckCircle className="w-6 h-6 text-green-500" />
-            ) : (
-              <Circle className="w-6 h-6 text-gray-500" />
-            )}
-            <div>
-              <h3 className="text-xl font-semibold">{tutorial.title}</h3>
-            </div>
-          </div>
+    <Link href={`/tutorials/${category}/${tutorial.id}` as any}>
+      <div className="card-glass group cursor-pointer h-full">
+        <div className={`flex items-start gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          {tutorial.completed ? (
+            <CheckCircle className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--a4)' }} />
+          ) : (
+            <Circle className="w-5 h-5 text-subtle flex-shrink-0" />
+          )}
+          <h3 className="font-semibold group-hover:gradient-text-simple transition-all" style={{ color: 'var(--t1)' }}>
+            {locale === 'ar' ? tutorial.titleAr : tutorial.title}
+          </h3>
         </div>
-        
-        <p className="text-gray-300 mb-4">{tutorial.description}</p>
-        
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center space-x-4">
-            <span className={`${levelColors[tutorial.level]} text-white px-3 py-1 rounded-full text-xs font-semibold uppercase`}>
+
+        <p className="text-muted text-sm leading-relaxed mb-4">
+          {locale === 'ar' ? tutorial.descriptionAr : tutorial.description}
+        </p>
+
+        <div className={`flex items-center justify-between text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <span className={`badge badge-${tutorial.level}`}>
               {tutorial.level}
             </span>
-            <span className="text-gray-400">{tutorial.lessons} lessons</span>
+            <span className="text-subtle">{tutorial.lessons} {locale === 'ar' ? 'درس' : 'lessons'}</span>
           </div>
-          <span className="text-gray-400">{tutorial.duration}</span>
+          <span className="text-subtle">{tutorial.duration}</span>
         </div>
       </div>
     </Link>

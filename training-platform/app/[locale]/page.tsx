@@ -1,592 +1,501 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import {useTranslations, useLocale} from 'next-intl';
-import {Link} from '@/i18n/routing';
-import Logo from '@/components/Logo'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { 
-  BookOpen, Code, Play, Award, Menu, X, Home, FileText, 
-  Sparkles, Zap, Target, Users, TrendingUp, Check, 
-  ArrowRight, Star, Dna, Microscope, Workflow, Brain, MessageSquare, Cpu, Lightbulb,
-  Terminal, Server, FileCode, UserCircle, LogIn
+import { useTranslations, useLocale } from 'next-intl'
+import { Link } from '@/i18n/routing'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import ParticlesBackground from '@/components/animations/ParticlesBackground'
+import DNAHelix from '@/components/animations/DNAHelix'
+import NeuralNetwork from '@/components/animations/NeuralNetwork'
+import TerminalAnimation from '@/components/animations/TerminalAnimation'
+import ScrollReveal from '@/components/ui/ScrollReveal'
+import AnimatedCounter from '@/components/ui/AnimatedCounter'
+import {
+  ArrowRight, Dna, Terminal, Brain, BookOpen, Code, Play,
+  Sparkles, Zap, Target, Users, Award, Star, Workflow,
+  Microscope, Cpu, MessageSquare, Lightbulb, Server, FileCode,
+  TrendingUp, Check, Flame
 } from 'lucide-react'
 
 export default function HomePage() {
-  const t = useTranslations();
-  const locale = useLocale();
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const isRTL = locale === 'ar';
+  const t = useTranslations()
+  const locale = useLocale()
+  const isRTL = locale === 'ar'
 
   return (
-    <div className="min-h-screen text-white relative">
-      {/* Animated Background Particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="particle w-2 h-2 bg-primary-400 rounded-full absolute top-20 left-10 opacity-60" style={{ animationDelay: '0s' }} />
-        <div className="particle w-3 h-3 bg-secondary-400 rounded-full absolute top-40 right-20 opacity-50" style={{ animationDelay: '2s' }} />
-        <div className="particle w-2 h-2 bg-accent-400 rounded-full absolute bottom-40 left-1/4 opacity-60" style={{ animationDelay: '4s' }} />
-        <div className="particle w-3 h-3 bg-primary-400 rounded-full absolute top-1/2 right-1/3 opacity-50" style={{ animationDelay: '1s' }} />
-        <div className="particle w-2 h-2 bg-secondary-400 rounded-full absolute bottom-20 right-1/4 opacity-60" style={{ animationDelay: '3s' }} />
-      </div>
+    <div className="min-h-screen relative">
+      <ParticlesBackground />
+      <Navbar />
 
-      {/* Navigation */}
-      <nav className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-strong shadow-glow-sm' : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`flex justify-between items-center h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Link href="/" className={`flex items-center space-x-3 group ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              <div className="transform transition-transform group-hover:scale-110">
-                <Logo size={48} animated={true} />
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative pt-32 pb-20 px-6 max-w-6xl mx-auto">
+        <div className={`grid md:grid-cols-2 gap-12 items-center ${isRTL ? 'md:grid-flow-dense' : ''}`}>
+          <div className={isRTL ? 'md:col-start-2' : ''}>
+            <ScrollReveal>
+              <div className="section-tag mb-6" style={{ color: 'var(--a1)' }}>
+                <Sparkles className="w-3 h-3 mr-1" />
+                {t('hero.welcome')}
               </div>
-              <div>
-                <span className="text-2xl font-display font-bold gradient-text block">BioNXA</span>
-                <span className="text-sm text-primary-300 font-semibold">{t('nav.academy')}</span>
+            </ScrollReveal>
+
+            <ScrollReveal delay={100}>
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                <span style={{ color: 'var(--t1)' }}>{locale === 'ar' ? 'أتقن ' : 'Master '}</span>
+                <span className="gradient-text">{locale === 'ar' ? 'المعلوماتية الحيوية' : 'Bioinformatics'}</span>
+                <br />
+                <span style={{ color: 'var(--t1)' }}>{locale === 'ar' ? 'بطريقتك' : 'Your Way'}</span>
+              </h1>
+            </ScrollReveal>
+
+            <ScrollReveal delay={200}>
+              <p className="text-muted text-lg leading-relaxed mb-8 max-w-lg">
+                {locale === 'ar'
+                  ? 'تعلم بناء حلول معلوماتية حيوية قابلة للتوسع ومدعومة بالذكاء الاصطناعي وقابلة للتكرار مع مساعدة الذكاء الاصطناعي وتحليل الكود الفوري ومسارات تعليمية مخصصة'
+                  : 'Learn to build scalable, AI-powered, and reproducible bioinformatics workflows with AI assistance, real-time code analysis, and personalized learning paths'}
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={300}>
+              <div className={`flex flex-wrap gap-3 mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Link href="/tutorials" className="btn-glow px-6 py-3 text-sm inline-flex items-center gap-2">
+                  {t('hero.startLearning')}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link href="/playground" className="btn-ghost px-6 py-3 text-sm inline-flex items-center gap-2">
+                  <Play className="w-4 h-4" />
+                  {t('hero.tryPlayground')}
+                </Link>
               </div>
-            </Link>
-            
-            {/* Desktop Menu */}
-            <div className={`hidden md:flex items-center ${isRTL ? 'space-x-reverse' : ''} space-x-8`}>
-              <Link href="/" className="group flex items-center space-x-2 hover:text-primary-400 transition">
-                <Home className="w-4 h-4 group-hover:animate-pulse" />
-                <span className="font-medium">{t('nav.home')}</span>
-              </Link>
-              <Link href="/tutorials" className="group flex items-center space-x-2 hover:text-secondary-400 transition">
-                <BookOpen className="w-4 h-4 group-hover:animate-pulse" />
-                <span className="font-medium">{t('nav.tutorials')}</span>
-              </Link>
-              <Link href="/playground" className="group flex items-center space-x-2 hover:text-accent-400 transition">
-                <Play className="w-4 h-4 group-hover:animate-pulse" />
-                <span className="font-medium">{t('nav.playground')}</span>
-              </Link>
-              <Link href="/resources" className="group flex items-center space-x-2 hover:text-primary-400 transition">
-                <FileText className="w-4 h-4 group-hover:animate-pulse" />
-                <span className="font-medium">{t('nav.resources')}</span>
-              </Link>
-              <LanguageSwitcher />
-              <Link href="/auth" className="btn-primary text-sm py-2 px-4">
-                <LogIn className="w-4 h-4 mr-2 inline" />
-                <span>{t('auth.signIn.button')}</span>
-              </Link>
-            </div>
+            </ScrollReveal>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
-              <LanguageSwitcher />
-              <button 
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="glass p-2 rounded-lg hover:glass-strong transition"
-              >
-                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden glass-strong border-t border-white/10 animate-slide-down">
-            <div className="px-4 py-6 space-y-4">
-              <Link href="/" className="block glass p-3 rounded-lg hover:glass-strong transition">{t('nav.home')}</Link>
-              <Link href="/tutorials" className="block glass p-3 rounded-lg hover:glass-strong transition">{t('nav.tutorials')}</Link>
-              <Link href="/playground" className="block glass p-3 rounded-lg hover:glass-strong transition">{t('nav.playground')}</Link>
-              <Link href="/resources" className="block glass p-3 rounded-lg hover:glass-strong transition">{t('nav.resources')}</Link>
-              <Link href="/auth" className="block btn-primary text-center">
-                <LogIn className="w-4 h-4 mr-2 inline" />
-                {t('auth.signIn.button')}
-              </Link>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="text-center relative z-10">
-          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-8 animate-scale-in">
-            <Sparkles className={`w-4 h-4 text-accent-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span className="text-sm font-semibold text-accent-300">{t('hero.welcome')}</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-extrabold mb-6 animate-slide-up">
-            <span className="gradient-text">{t('hero.title1')}</span>
-            <br />
-            <span className="text-white">{t('hero.title2')}</span>
-            <br />
-            <span className="gradient-text">{t('hero.title3')}</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            {t.rich('hero.description', {
-              scalable: (chunks) => <span className="text-primary-400 font-semibold">{chunks}</span>,
-              intelligent: (chunks) => <span className="text-secondary-400 font-semibold">{chunks}</span>,
-              reproducible: (chunks) => <span className="text-accent-400 font-semibold">{chunks}</span>,
-            })}
-          </p>
-          
-          <div className={`flex flex-col sm:flex-row gap-6 justify-center animate-scale-in ${isRTL ? 'sm:flex-row-reverse' : ''}`} style={{ animationDelay: '0.4s' }}>
-            <Link href="/tutorials" className="btn-primary group">
-              <span>{t('hero.startLearning')}</span>
-              <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'} inline group-hover:translate-x-1 transition-transform`} />
-            </Link>
-            <Link href="/playground" className="btn-ghost group">
-              <Play className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} inline group-hover:scale-110 transition-transform`} />
-              <span>{t('hero.tryPlayground')}</span>
-            </Link>
+            <ScrollReveal delay={400}>
+              <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="flex -space-x-2">
+                  {['#00f0ff', '#b44aff', '#ff4a8d', '#4aff91'].map((color, i) => (
+                    <div
+                      key={i}
+                      className="w-7 h-7 rounded-full border-2"
+                      style={{ background: color, borderColor: 'var(--bg)', zIndex: 4 - i }}
+                    />
+                  ))}
+                </div>
+                <span className="text-muted text-xs">
+                  {locale === 'ar' ? '312 باحث انضموا بالفعل' : '312 researchers already joined'}
+                </span>
+              </div>
+            </ScrollReveal>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <StatCard number="10+" label={t('stats.tutorials')} icon={<BookOpen className="w-6 h-6" />} />
-            <StatCard number="50+" label={t('stats.lessons')} icon={<Target className="w-6 h-6" />} />
-            <StatCard number="100%" label={t('stats.free')} icon={<Sparkles className="w-6 h-6" />} />
-            <StatCard number="24/7" label={t('stats.access')} icon={<Zap className="w-6 h-6" />} />
+          {/* DNA Helix */}
+          <div className={`hidden md:block ${isRTL ? 'md:col-start-1' : ''}`}>
+            <ScrollReveal delay={200}>
+              <DNAHelix />
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            <span className="gradient-text-simple">{t('features.title')}</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {t('features.subtitle')}
-          </p>
-        </div>
+      {/* ===== STATS MARQUEE ===== */}
+      <ScrollReveal>
+        <section className="border-y border-theme py-5 overflow-hidden">
+          <div className="flex animate-marquee whitespace-nowrap gap-16">
+            {[...Array(2)].map((_, setIdx) => (
+              <div key={setIdx} className="flex gap-16 items-center">
+                <StatItem label={locale === 'ar' ? 'سوق المعلوماتية الحيوية' : 'Bioinformatics Market'} value="$37B" suffix=" by 2031" />
+                <span className="text-subtle">|</span>
+                <StatItem label={locale === 'ar' ? 'سوق التعليم الإلكتروني' : 'EdTech Market'} value="$589B" suffix=" by 2034" />
+                <span className="text-subtle">|</span>
+                <StatItem label={locale === 'ar' ? 'منافسون مباشرون' : 'Direct Competitors'} value="0" suffix="" />
+                <span className="text-subtle">|</span>
+                <StatItem label={locale === 'ar' ? 'مدعوم بالذكاء الاصطناعي' : 'AI-Powered'} value="100" suffix="%" />
+                <span className="text-subtle">|</span>
+                <StatItem label={locale === 'ar' ? 'ثنائي اللغة' : 'Bilingual'} value="EN" suffix=" + AR" />
+                <span className="text-subtle">|</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <FeatureCard
-            icon={<BookOpen className="w-12 h-12" />}
-            gradient="from-primary-500 to-primary-600"
-            title={t('features.interactive.title')}
-            description={t('features.interactive.description')}
-            features={[
-              t('features.interactive.feature1'),
-              t('features.interactive.feature2'),
-              t('features.interactive.feature3')
-            ]}
-            isRTL={isRTL}
-          />
-          <FeatureCard
-            icon={<Code className="w-12 h-12" />}
-            gradient="from-secondary-500 to-secondary-600"
-            title={t('features.playground.title')}
-            description={t('features.playground.description')}
-            features={[
-              t('features.playground.feature1'),
-              t('features.playground.feature2'),
-              t('features.playground.feature3')
-            ]}
-            isRTL={isRTL}
-          />
-          <FeatureCard
-            icon={<Award className="w-12 h-12" />}
-            gradient="from-accent-500 to-accent-600"
-            title={t('features.progress.title')}
-            description={t('features.progress.description')}
-            features={[
-              t('features.progress.feature1'),
-              t('features.progress.feature2'),
-              t('features.progress.feature3')
-            ]}
-            isRTL={isRTL}
-          />
+      {/* ===== TERMINAL CODE DEMO ===== */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <div className={`grid md:grid-cols-2 gap-12 items-center ${isRTL ? 'md:grid-flow-dense' : ''}`}>
+          <div className={isRTL ? 'md:col-start-2' : ''}>
+            <ScrollReveal>
+              <TerminalAnimation />
+            </ScrollReveal>
+          </div>
+          <div className={isRTL ? 'md:col-start-1' : ''}>
+            <ScrollReveal delay={100}>
+              <div className="section-tag mb-4" style={{ color: 'var(--a4)' }}>
+                <Terminal className="w-3 h-3 mr-1" />
+                {locale === 'ar' ? 'تعلّم بالممارسة' : 'Learn by Doing'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--t1)' }}>
+                {locale === 'ar' ? 'شغّل خطوط أنابيب حقيقية' : 'Run Real Pipelines'}
+              </h2>
+              <p className="text-muted leading-relaxed mb-6">
+                {locale === 'ar'
+                  ? 'اكتب وشغّل خطوط أنابيب Nextflow حقيقية مباشرة في المتصفح. من تحليل RNA-seq إلى استدعاء المتغيرات — تعلّم بالممارسة الفعلية.'
+                  : 'Write and execute real Nextflow pipelines directly in your browser. From RNA-seq analysis to variant calling — learn by actually doing it.'}
+              </p>
+              <div className="flex flex-col gap-3">
+                {[
+                  { icon: <Terminal className="w-4 h-4" />, text: locale === 'ar' ? 'محرر كود تفاعلي مع Monaco' : 'Interactive code editor with Monaco' },
+                  { icon: <Cpu className="w-4 h-4" />, text: locale === 'ar' ? 'رؤى كود مدعومة بالذكاء الاصطناعي' : 'AI-powered code insights' },
+                  { icon: <Check className="w-4 h-4" />, text: locale === 'ar' ? 'أمثلة سير عمل جاهزة' : 'Pre-built workflow examples' },
+                ].map((item, i) => (
+                  <div key={i} className={`flex items-center gap-2 text-sm text-muted ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-accent-4">{item.icon}</span>
+                    {item.text}
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
-      {/* AI Features Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-6 animate-pulse">
-            <Brain className={`w-4 h-4 text-accent-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span className="text-sm font-semibold text-accent-300">{t('aiFeatures.badge')}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            <span className="gradient-text-simple">{t('aiFeatures.title')}</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {t('aiFeatures.subtitle')}
-          </p>
-        </div>
+      {/* ===== AI TUTOR SECTION ===== */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <div className={`grid md:grid-cols-2 gap-12 items-center ${isRTL ? 'md:grid-flow-dense' : ''}`}>
+          <div className={isRTL ? 'md:col-start-1' : ''}>
+            <ScrollReveal delay={100}>
+              <div className="section-tag mb-4" style={{ color: 'var(--a2)' }}>
+                <Brain className="w-3 h-3 mr-1" />
+                {locale === 'ar' ? 'مدعوم بالذكاء الاصطناعي' : 'AI-Powered'}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--t1)' }}>
+                {locale === 'ar' ? 'معلّمك الشخصي بالذكاء الاصطناعي' : 'Your Personal AI Tutor'}
+              </h2>
+              <p className="text-muted leading-relaxed mb-6">
+                {locale === 'ar'
+                  ? 'احصل على مساعدة فورية ومخصصة من مساعد الذكاء الاصطناعي. اسأل عن أي شيء — من أساسيات Nextflow إلى خطوط أنابيب المعلوماتية الحيوية المتقدمة.'
+                  : 'Get instant, personalized help from the AI assistant. Ask anything — from Nextflow basics to advanced bioinformatics pipelines.'}
+              </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <MessageSquare className="w-7 h-7 text-white" />
+              {/* AI Chat Demo */}
+              <div className="card-glass p-0 overflow-hidden">
+                <div className="p-3 border-b border-theme flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full" style={{ background: 'var(--a4)' }} />
+                  <span className="text-xs font-mono text-muted">BioNXA AI Assistant</span>
+                </div>
+                <div className="p-4 flex flex-col gap-3">
+                  <div className="ai-msg-user rounded-xl px-3 py-2 text-xs max-w-[80%]">
+                    {locale === 'ar' ? 'كيف أحلل بيانات RNA-seq؟' : 'How do I analyze RNA-seq data?'}
+                  </div>
+                  <div className="ai-msg-bot rounded-xl px-3 py-2 text-xs max-w-[85%]">
+                    {locale === 'ar'
+                      ? 'ابدأ بمراقبة الجودة باستخدام FastQC، ثم قص المحولات باستخدام Trim Galore، ومحاذاة القراءات مع STAR، وأخيراً التحليل التفاضلي باستخدام DESeq2. دعني أريك خط أنابيب Nextflow...'
+                      : 'Start with quality control using FastQC, then trim adapters with Trim Galore, align reads with STAR, and finally run differential expression with DESeq2. Let me show you a Nextflow pipeline...'}
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('aiFeatures.assistant.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('aiFeatures.assistant.description')}
-                </p>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
-
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Cpu className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('aiFeatures.codeAnalysis.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('aiFeatures.codeAnalysis.description')}
-                </p>
-              </div>
-            </div>
+          <div className={`relative ${isRTL ? 'md:col-start-2' : ''}`}>
+            <ScrollReveal>
+              <NeuralNetwork />
+            </ScrollReveal>
           </div>
-
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Brain className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('aiFeatures.personalized.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('aiFeatures.personalized.description')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Lightbulb className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('aiFeatures.smartHelp.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('aiFeatures.smartHelp.description')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Try AI CTA */}
-        <div className="mt-12 text-center">
-          <Link href="/playground" className="btn-primary inline-flex items-center">
-            <Brain className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'} animate-pulse`} />
-            <span>Experience AI-Powered Learning</span>
-            <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
-          </Link>
         </div>
       </section>
 
-      {/* Learning Path Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-6">
-            <TrendingUp className={`w-4 h-4 text-primary-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span className="text-sm font-semibold text-primary-300">{t('learningPath.badge')}</span>
+      {/* ===== FEATURES BENTO GRID ===== */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="section-tag mb-4 mx-auto" style={{ color: 'var(--a1)' }}>
+              {locale === 'ar' ? 'لماذا BioNXA' : 'Why BioNXA'}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: 'var(--t1)' }}>
+              {t('features.title')}
+            </h2>
           </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            <span className="gradient-text-simple">{t('learningPath.title')}</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {t('learningPath.subtitle')}
-          </p>
+        </ScrollReveal>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <ScrollReveal delay={0}>
+            <FeatureCard
+              icon={<Dna className="w-5 h-5" />}
+              iconClass="icon-box-cyan"
+              title={t('features.interactive.title')}
+              description={t('features.interactive.description')}
+              features={[t('features.interactive.feature1'), t('features.interactive.feature2'), t('features.interactive.feature3')]}
+              isRTL={isRTL}
+            />
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <FeatureCard
+              icon={<Code className="w-5 h-5" />}
+              iconClass="icon-box-violet"
+              title={t('features.playground.title')}
+              description={t('features.playground.description')}
+              features={[t('features.playground.feature1'), t('features.playground.feature2'), t('features.playground.feature3')]}
+              isRTL={isRTL}
+            />
+          </ScrollReveal>
+          <ScrollReveal delay={200}>
+            <FeatureCard
+              icon={<Award className="w-5 h-5" />}
+              iconClass="icon-box-rose"
+              title={t('features.progress.title')}
+              description={t('features.progress.description')}
+              features={[t('features.progress.feature1'), t('features.progress.feature2'), t('features.progress.feature3')]}
+              isRTL={isRTL}
+            />
+          </ScrollReveal>
         </div>
 
-        <div className="space-y-6">
-          <PathStep 
-            number={1} 
-            title={t('learningPath.linux.title')}
-            description={t('learningPath.linux.description')}
-            icon={<Terminal className="w-6 h-6" />}
-            color="accent"
-            duration={t('learningPath.linux.duration')}
-            href="/tutorials"
-            isRTL={isRTL}
-          />
-          <PathStep 
-            number={2} 
-            title={t('learningPath.basics.title')}
-            description={t('learningPath.basics.description')}
-            icon={<Workflow className="w-6 h-6" />}
-            color="primary"
-            duration={t('learningPath.basics.duration')}
-            href="/tutorials"
-            isRTL={isRTL}
-          />
-          <PathStep 
-            number={3} 
-            title={t('learningPath.bioinformatics.title')}
-            description={t('learningPath.bioinformatics.description')}
-            icon={<Dna className="w-6 h-6" />}
-            color="secondary"
-            duration={t('learningPath.bioinformatics.duration')}
-            href="/tutorials"
-            isRTL={isRTL}
-          />
-          <PathStep 
-            number={4} 
-            title={t('learningPath.advanced.title')}
-            description={t('learningPath.advanced.description')}
-            icon={<Brain className="w-6 h-6" />}
-            color="primary"
-            duration={t('learningPath.advanced.duration')}
-            href="/tutorials"
-            isRTL={isRTL}
-          />
-          <PathStep 
-            number={5} 
-            title={t('learningPath.projects.title')}
-            description={t('learningPath.projects.description')}
-            icon={<Star className="w-6 h-6" />}
-            color="secondary"
-            duration={t('learningPath.projects.duration')}
-            href="/tutorials"
-            isRTL={isRTL}
-          />
+        {/* AI Features Row */}
+        <div className="grid md:grid-cols-2 gap-4 mt-4">
+          <ScrollReveal delay={100}>
+            <div className="card-glass">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="icon-box-violet flex-shrink-0">
+                  <MessageSquare className="w-5 h-5" style={{ color: 'var(--a2)' }} />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: 'var(--t1)' }}>{t('aiFeatures.assistant.title')}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{t('aiFeatures.assistant.description')}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={200}>
+            <div className="card-glass">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="icon-box-mint flex-shrink-0">
+                  <Brain className="w-5 h-5" style={{ color: 'var(--a4)' }} />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: 'var(--t1)' }}>{t('aiFeatures.personalized.title')}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{t('aiFeatures.personalized.description')}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Linux Features Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center glass px-4 py-2 rounded-full mb-6">
-            <Terminal className={`w-4 h-4 text-green-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span className="text-sm font-semibold text-green-300">{t('linuxFeatures.badge')}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-            <span className="gradient-text-simple">{t('linuxFeatures.title')}</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {t('linuxFeatures.subtitle')}
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Terminal className="w-7 h-7 text-white" />
+      {/* ===== GAMIFICATION ===== */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <div className={`grid md:grid-cols-2 gap-12 items-center ${isRTL ? 'md:grid-flow-dense' : ''}`}>
+          <div className={isRTL ? 'md:col-start-2' : ''}>
+            <ScrollReveal>
+              <div className="section-tag mb-4" style={{ color: 'var(--a3)' }}>
+                <Flame className="w-3 h-3 mr-1" />
+                {locale === 'ar' ? 'تعلّم ممتع' : 'Gamified Learning'}
               </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('linuxFeatures.terminal.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('linuxFeatures.terminal.description')}
-                </p>
-              </div>
-            </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: 'var(--t1)' }}>
+                {locale === 'ar' ? 'تعلّم. تنافس. تقدّم.' : 'Learn. Compete. Level Up.'}
+              </h2>
+              <p className="text-muted leading-relaxed mb-6">
+                {locale === 'ar'
+                  ? 'اكسب نقاط الخبرة، حافظ على سلسلة التعلم اليومية، واحصل على شارات بينما تتقن المعلوماتية الحيوية.'
+                  : 'Earn XP, maintain daily streaks, and unlock badges as you master bioinformatics.'}
+              </p>
+            </ScrollReveal>
           </div>
 
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <FileCode className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('linuxFeatures.scripting.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('linuxFeatures.scripting.description')}
-                </p>
-              </div>
-            </div>
-          </div>
+          <div className={isRTL ? 'md:col-start-1' : ''}>
+            <ScrollReveal delay={200}>
+              <div className="card-glass">
+                {/* Streak */}
+                <div className="mb-5">
+                  <div className={`flex items-center gap-2 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <Flame className="w-4 h-4" style={{ color: 'var(--a3)' }} />
+                    <span className="text-sm font-semibold" style={{ color: 'var(--t1)' }}>
+                      {locale === 'ar' ? 'سلسلة 7 أيام' : '7 Day Streak'}
+                    </span>
+                  </div>
+                  <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
+                      <div key={i} className={`streak-dot ${i < 5 ? 'done' : ''}`}>
+                        {i < 5 ? '✓' : day}
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Code className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('linuxFeatures.tools.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('linuxFeatures.tools.description')}
-                </p>
-              </div>
-            </div>
-          </div>
+                {/* XP Bar */}
+                <div className="mb-5">
+                  <div className={`flex justify-between text-xs mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-accent-1 font-semibold">Level 12</span>
+                    <span className="text-muted">2,450 / 3,000 XP</span>
+                  </div>
+                  <div className="xp-bar">
+                    <div className="xp-fill" style={{ width: '82%' }} />
+                  </div>
+                </div>
 
-          <div className="card-glow card group">
-            <div className="flex items-start space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-glow-md">
-                <Server className="w-7 h-7 text-white" />
+                {/* Badges */}
+                <div>
+                  <span className="text-xs font-semibold text-muted block mb-2">
+                    {locale === 'ar' ? 'الشارات' : 'Badges'}
+                  </span>
+                  <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    {['🧬', '💻', '🧪', '🏆', '🔬'].map((badge, i) => (
+                      <div
+                        key={i}
+                        className="w-9 h-9 rounded-lg flex items-center justify-center text-sm"
+                        style={{ background: 'var(--bgc)', border: '1px solid var(--brd)' }}
+                      >
+                        {badge}
+                      </div>
+                    ))}
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center text-xs text-subtle"
+                      style={{ background: 'var(--bgc)', border: '1px dashed var(--brd)' }}
+                    >
+                      +8
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-display font-semibold mb-2 group-hover:gradient-text-simple transition-all">
-                  {t('linuxFeatures.servers.title')}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('linuxFeatures.servers.description')}
-                </p>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
-        </div>
-
-        {/* Linux CTA */}
-        <div className="mt-12 text-center">
-          <Link href="/tutorials" className="btn-primary inline-flex items-center">
-            <Terminal className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span>Start Linux Training</span>
-            <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
-          </Link>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="card-glow glass-strong rounded-3xl p-12 md:p-16 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-secondary-500/10 to-accent-500/10" />
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
+      {/* ===== LEARNING JOURNEY ===== */}
+      <section className="max-w-6xl mx-auto px-6 py-20">
+        <ScrollReveal>
+          <div className="text-center mb-12">
+            <div className="section-tag mb-4 mx-auto" style={{ color: 'var(--a2)' }}>
+              <TrendingUp className="w-3 h-3 mr-1" />
+              {t('learningPath.badge')}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: 'var(--t1)' }}>
+              {t('learningPath.title')}
+            </h2>
+          </div>
+        </ScrollReveal>
+
+        <div className={`relative ${isRTL ? 'pr-8' : 'pl-8'}`}>
+          <div className="journey-line" style={isRTL ? { right: '15px', left: 'auto' } : {}} />
+
+          {[
+            { num: 1, icon: <Terminal className="w-4 h-4" />, color: 'var(--a4)', title: t('learningPath.linux.title'), desc: t('learningPath.linux.description'), dur: t('learningPath.linux.duration') },
+            { num: 2, icon: <Workflow className="w-4 h-4" />, color: 'var(--a1)', title: t('learningPath.basics.title'), desc: t('learningPath.basics.description'), dur: t('learningPath.basics.duration') },
+            { num: 3, icon: <Dna className="w-4 h-4" />, color: 'var(--a2)', title: t('learningPath.bioinformatics.title'), desc: t('learningPath.bioinformatics.description'), dur: t('learningPath.bioinformatics.duration') },
+            { num: 4, icon: <Brain className="w-4 h-4" />, color: 'var(--a3)', title: t('learningPath.advanced.title'), desc: t('learningPath.advanced.description'), dur: t('learningPath.advanced.duration') },
+            { num: 5, icon: <Star className="w-4 h-4" />, color: 'var(--a5)', title: t('learningPath.projects.title'), desc: t('learningPath.projects.description'), dur: t('learningPath.projects.duration') },
+          ].map((step, i) => (
+            <ScrollReveal key={i} delay={i * 100}>
+              <Link href="/tutorials">
+                <div className="card-glass mb-4 cursor-pointer group" style={{ [isRTL ? 'marginRight' : 'marginLeft']: '24px' }}>
+                  <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-sm font-bold group-hover:scale-110 transition-transform"
+                      style={{ background: `${step.color}20`, color: step.color, border: `1px solid ${step.color}30` }}
+                    >
+                      {step.num}
+                    </div>
+                    <div className="flex-1">
+                      <div className={`flex items-center gap-2 mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span style={{ color: step.color }}>{step.icon}</span>
+                        <h3 className="font-semibold group-hover:gradient-text-simple transition-all" style={{ color: 'var(--t1)' }}>
+                          {step.title}
+                        </h3>
+                      </div>
+                      <p className="text-muted text-sm leading-relaxed mb-2">{step.desc}</p>
+                      <div className={`flex items-center gap-1 text-xs text-subtle ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <TrendingUp className="w-3 h-3" />
+                        {step.dur}
+                      </div>
+                    </div>
+                    <ArrowRight className={`w-4 h-4 text-subtle opacity-0 group-hover:opacity-100 transition ${isRTL ? 'rotate-180' : ''}`} />
+                  </div>
+                </div>
+              </Link>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== CTA SECTION ===== */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <ScrollReveal>
+          <div className="card-glass text-center py-16 px-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
               <span className="gradient-text">{t('cta.title')}</span>
             </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-muted text-lg mb-8 max-w-xl mx-auto">
               {t('cta.description')}
             </p>
-            <Link href="/tutorials" className="btn-primary inline-flex items-center text-lg">
-              <Sparkles className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              <span>{t('cta.button')}</span>
-              <ArrowRight className={`w-5 h-5 ${isRTL ? 'mr-2' : 'ml-2'}`} />
-            </Link>
+            <div className={`flex flex-wrap gap-3 justify-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Link href="/tutorials" className="btn-glow px-8 py-3 text-sm inline-flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                {t('cta.button')}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Waitlist */}
+            <div className="mt-8 pt-6 border-t border-theme">
+              <p className="text-subtle text-xs mb-3">
+                {locale === 'ar' ? 'أو انضم لقائمة الانتظار للوصول المبكر' : 'Or join the waitlist for early access'}
+              </p>
+              <div className={`flex gap-2 max-w-sm mx-auto ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <input
+                  type="email"
+                  placeholder={locale === 'ar' ? 'بريدك الإلكتروني' : 'your@email.com'}
+                  className="flex-1 px-4 py-2 rounded-xl text-sm font-mono"
+                  style={{ background: 'var(--bgc)', border: '1px solid var(--brd)', color: 'var(--t1)' }}
+                />
+                <button className="btn-glow px-4 py-2 text-xs">
+                  {locale === 'ar' ? 'انضم' : 'Join'}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
-      {/* Footer */}
-      <footer className="glass-strong border-t border-white/10 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className={`flex flex-col md:flex-row justify-between items-center ${isRTL ? 'md:flex-row-reverse' : ''}`}>
-            <div className={`flex items-center space-x-3 mb-6 md:mb-0 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              <Logo size={40} animated={false} />
-              <div>
-                <span className="text-lg font-display font-bold gradient-text block">BioNXA Academy</span>
-                <span className="text-xs text-gray-400">{t('footer.subtitle')}</span>
-              </div>
-            </div>
-            <div className={`text-center ${isRTL ? 'md:text-left' : 'md:text-right'} text-gray-400`}>
-              <p className="mb-2">{t('footer.credits')}</p>
-              <p className="text-sm mb-3">{t('footer.tagline')}</p>
-              <div className={`flex items-center justify-center ${isRTL ? 'md:justify-start' : 'md:justify-end'} space-x-4 text-sm ${isRTL ? 'space-x-reverse' : ''}`}>
-                <Link href="/privacy" className="text-gray-400 hover:text-primary-400 transition">
-                  {t('footer.privacy')}
-                </Link>
-                <span className="text-gray-600">•</span>
-                <Link href="/terms" className="text-gray-400 hover:text-primary-400 transition">
-                  {t('footer.terms')}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
 
-function StatCard({ number, label, icon }: { number: string; label: string; icon: React.ReactNode }) {
+/* ===== SUB-COMPONENTS ===== */
+
+function StatItem({ label, value, suffix }: { label: string; value: string; suffix: string }) {
   return (
-    <div className="card text-center group">
-      <div className="text-primary-400 mb-2 flex justify-center group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <div className="text-3xl font-bold gradient-text-simple mb-1">{number}</div>
-      <div className="text-sm text-gray-400">{label}</div>
+    <div className="flex items-center gap-3">
+      <span className="text-xl font-bold gradient-text">{value}{suffix}</span>
+      <span className="text-subtle text-xs">{label}</span>
     </div>
   )
 }
 
-function FeatureCard({ icon, gradient, title, description, features, isRTL }: { 
-  icon: React.ReactNode; 
-  gradient: string;
-  title: string; 
-  description: string;
-  features: string[];
-  isRTL: boolean;
+function FeatureCard({ icon, iconClass, title, description, features, isRTL }: {
+  icon: React.ReactNode
+  iconClass: string
+  title: string
+  description: string
+  features: string[]
+  isRTL: boolean
 }) {
   return (
-    <div className="card-glow card group cursor-pointer">
-      <div className={`w-16 h-16 bg-gradient-to-br ${gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-glow-md`}>
-        <div className="text-white">{icon}</div>
+    <div className="card-glass h-full group">
+      <div className={`${iconClass} mb-4 group-hover:scale-110 transition-transform`}>
+        <span style={{ color: iconClass.includes('cyan') ? 'var(--a1)' : iconClass.includes('violet') ? 'var(--a2)' : 'var(--a3)' }}>
+          {icon}
+        </span>
       </div>
-      <h3 className="text-2xl font-display font-semibold mb-4 group-hover:gradient-text-simple transition-all">{title}</h3>
-      <p className="text-gray-300 mb-6 leading-relaxed">{description}</p>
+      <h3 className="font-semibold mb-2 group-hover:gradient-text-simple transition-all" style={{ color: 'var(--t1)' }}>
+        {title}
+      </h3>
+      <p className="text-muted text-sm leading-relaxed mb-4">{description}</p>
       <div className="space-y-2">
-        {features.map((feature, index) => (
-          <div key={index} className={`flex items-center text-sm text-gray-400 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Check className={`w-4 h-4 text-primary-400 ${isRTL ? 'ml-2' : 'mr-2'} flex-shrink-0`} />
-            <span>{feature}</span>
+        {features.map((f, i) => (
+          <div key={i} className={`flex items-center gap-2 text-xs text-muted ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Check className="w-3 h-3 text-accent-4 flex-shrink-0" />
+            {f}
           </div>
         ))}
       </div>
     </div>
-  )
-}
-
-function PathStep({ number, title, description, icon, color, duration, href, isRTL }: { 
-  number: number; 
-  title: string; 
-  description: string;
-  icon: React.ReactNode;
-  color: 'primary' | 'secondary' | 'accent';
-  duration: string;
-  href: string;
-  isRTL: boolean;
-}) {
-  const colorClasses = {
-    primary: 'from-primary-500 to-primary-600 shadow-glow-sm',
-    secondary: 'from-secondary-500 to-secondary-600 shadow-glow-purple',
-    accent: 'from-accent-500 to-accent-600 shadow-glow-orange',
-  }
-
-  return (
-    <Link href={href}>
-      <div className="card-glow card group cursor-pointer hover:scale-[1.02] transition-all">
-        <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-6`}>
-          <div className={`w-16 h-16 bg-gradient-to-br ${colorClasses[color]} rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl font-bold text-white group-hover:scale-110 transition-transform`}>
-            {number}
-          </div>
-          <div className="flex-1">
-            <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className="text-primary-400 group-hover:scale-110 transition-transform">
-                {icon}
-              </div>
-              <h3 className="text-2xl font-display font-semibold group-hover:gradient-text-simple transition-all">{title}</h3>
-            </div>
-            <p className="text-gray-300 mb-3 leading-relaxed">{description}</p>
-            <div className={`flex items-center text-sm text-gray-400 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <TrendingUp className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              <span>{duration}</span>
-            </div>
-          </div>
-          <div className={`text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity ${isRTL ? 'scale-x-[-1]' : ''}`}>
-            <ArrowRight className="w-6 h-6" />
-          </div>
-        </div>
-      </div>
-    </Link>
   )
 }

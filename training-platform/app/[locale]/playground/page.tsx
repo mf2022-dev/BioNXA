@@ -1,13 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import dynamic from 'next/dynamic'
-import { Play, Save, Download, Home, ChevronRight, AlertCircle, CheckCircle, Brain, Sparkles } from 'lucide-react'
+import { Play, Save, Download, AlertCircle, Code, Lightbulb } from 'lucide-react'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
+import ParticlesBackground from '@/components/animations/ParticlesBackground'
 import AIAssistant from '@/components/AIAssistant'
 import AICodeAnalyzer from '@/components/AICodeAnalyzer'
 
-// Dynamically import Monaco Editor to avoid SSR issues
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
 
 const exampleWorkflows = {
@@ -134,6 +136,8 @@ workflow {
 }
 
 export default function PlaygroundPage() {
+  const locale = useLocale()
+  const isRTL = locale === 'ar'
   const [code, setCode] = useState(exampleWorkflows.hello.code)
   const [output, setOutput] = useState('')
   const [isRunning, setIsRunning] = useState(false)
@@ -142,8 +146,6 @@ export default function PlaygroundPage() {
   const handleRun = () => {
     setIsRunning(true)
     setOutput('Running workflow...\n')
-    
-    // Simulate workflow execution
     setTimeout(() => {
       setOutput(`N E X T F L O W  ~  version 24.10.0
 Launching workflow...
@@ -166,66 +168,57 @@ Workflow completed successfully!
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      {/* AI Components */}
+    <div className="min-h-screen relative">
+      <ParticlesBackground />
+      <Navbar />
       <AIAssistant context="playground" currentCode={code} />
       <AICodeAnalyzer code={code} language="groovy" />
-      
-      {/* Navigation */}
-      <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-6">
-              <Link href="/" className="flex items-center space-x-2 text-primary hover:text-secondary transition">
-                <Home className="w-5 h-5" />
-                <span>Home</span>
-              </Link>
-              <ChevronRight className="w-4 h-4 text-gray-500" />
-              <span className="font-semibold">Playground</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleRun}
-                disabled={isRunning}
-                className="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-lg transition flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Play className="w-4 h-4" />
-                <span>{isRunning ? 'Running...' : 'Run'}</span>
-              </button>
-              <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition flex items-center space-x-2">
-                <Save className="w-4 h-4" />
-                <span>Save</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Example Selector */}
-        <div className="mb-4 flex items-center space-x-4">
-          <label className="text-sm font-semibold text-gray-300">Example:</label>
-          <select
-            value={selectedExample}
-            onChange={(e) => handleExampleChange(e.target.value)}
-            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary"
-          >
-            {Object.entries(exampleWorkflows).map(([key, example]) => (
-              <option key={key} value={key}>
-                {example.name}
-              </option>
-            ))}
-          </select>
+      <div className="max-w-7xl mx-auto px-6 pt-28 pb-12">
+        {/* Top bar */}
+        <div className={`flex flex-wrap items-center justify-between gap-4 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className="section-tag" style={{ color: 'var(--a1)' }}>
+              <Code className="w-3 h-3 mr-1" />
+              {isRTL ? 'ساحة التجارب' : 'Code Playground'}
+            </div>
+            <select
+              value={selectedExample}
+              onChange={(e) => handleExampleChange(e.target.value)}
+              className="px-3 py-1.5 rounded-lg text-sm font-mono"
+              style={{ background: 'var(--bgc)', border: '1px solid var(--brd)', color: 'var(--t1)' }}
+            >
+              {Object.entries(exampleWorkflows).map(([key, example]) => (
+                <option key={key} value={key}>{example.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <button
+              onClick={handleRun}
+              disabled={isRunning}
+              className="btn-glow px-4 py-2 text-xs inline-flex items-center gap-2 disabled:opacity-50"
+            >
+              <Play className="w-3 h-3" />
+              {isRunning ? (isRTL ? 'جارٍ التشغيل...' : 'Running...') : (isRTL ? 'تشغيل' : 'Run')}
+            </button>
+            <button className="btn-ghost px-4 py-2 text-xs inline-flex items-center gap-2">
+              <Save className="w-3 h-3" />
+              {isRTL ? 'حفظ' : 'Save'}
+            </button>
+          </div>
         </div>
 
         {/* Editor and Output */}
-        <div className="grid lg:grid-cols-2 gap-4 h-[calc(100vh-200px)]">
+        <div className="grid lg:grid-cols-2 gap-4 h-[calc(100vh-240px)]">
           {/* Code Editor */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden">
-            <div className="bg-gray-900 px-4 py-2 border-b border-gray-700">
-              <h3 className="font-semibold">Nextflow Script</h3>
+          <div className="card-glass p-0 overflow-hidden">
+            <div className="px-4 py-2 border-b border-theme flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ background: 'var(--a4)' }} />
+              <span className="text-xs font-mono text-muted">Nextflow Script</span>
             </div>
-            <div className="h-full">
+            <div className="h-[calc(100%-36px)]">
               <MonacoEditor
                 height="100%"
                 language="groovy"
@@ -238,26 +231,28 @@ Workflow completed successfully!
                   lineNumbers: 'on',
                   scrollBeyondLastLine: false,
                   automaticLayout: true,
+                  padding: { top: 12 },
                 }}
               />
             </div>
           </div>
 
           {/* Output Panel */}
-          <div className="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden flex flex-col">
-            <div className="bg-gray-900 px-4 py-2 border-b border-gray-700">
-              <h3 className="font-semibold">Output</h3>
+          <div className="card-glass p-0 overflow-hidden flex flex-col">
+            <div className="px-4 py-2 border-b border-theme flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ background: isRunning ? 'var(--a3)' : output ? 'var(--a4)' : 'var(--t3)' }} />
+              <span className="text-xs font-mono text-muted">Output</span>
             </div>
             <div className="flex-1 overflow-auto p-4">
               {output ? (
-                <pre className="text-sm text-green-400 font-mono whitespace-pre-wrap">
+                <pre className="text-sm font-mono whitespace-pre-wrap" style={{ color: 'var(--a4)' }}>
                   {output}
                 </pre>
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-500">
+                <div className="flex items-center justify-center h-full text-subtle">
                   <div className="text-center">
-                    <AlertCircle className="w-12 h-12 mx-auto mb-4" />
-                    <p>Click &quot;Run&quot; to execute your workflow</p>
+                    <Play className="w-10 h-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm">{isRTL ? 'اضغط "تشغيل" لتنفيذ سير العمل' : 'Click "Run" to execute your workflow'}</p>
                   </div>
                 </div>
               )}
@@ -265,22 +260,26 @@ Workflow completed successfully!
           </div>
         </div>
 
-        {/* Help Section */}
-        <div className="mt-6 bg-blue-900/20 border border-blue-700 rounded-xl p-4">
-          <div className="flex items-start space-x-3">
-            <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+        {/* Tips */}
+        <div className="card-glass mt-4">
+          <div className={`flex items-start gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--a1)' }} />
             <div>
-              <h4 className="font-semibold text-blue-400 mb-2">Playground Tips</h4>
-              <ul className="text-sm text-gray-300 space-y-1">
-                <li>• This is a simulated environment for learning purposes</li>
-                <li>• Try modifying the example workflows to see how they work</li>
-                <li>• Check out the tutorials for detailed explanations</li>
-                <li>• For real execution, install Nextflow locally or use a cloud platform</li>
+              <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--a1)' }}>
+                {isRTL ? 'نصائح ساحة التجارب' : 'Playground Tips'}
+              </h4>
+              <ul className="text-sm text-muted space-y-1">
+                <li>{isRTL ? '• هذه بيئة محاكاة لأغراض التعلم' : '• This is a simulated environment for learning purposes'}</li>
+                <li>{isRTL ? '• جرّب تعديل أمثلة سير العمل لترى كيف تعمل' : '• Try modifying the example workflows to see how they work'}</li>
+                <li>{isRTL ? '• اطلع على الدورات التعليمية للشرح المفصل' : '• Check out the tutorials for detailed explanations'}</li>
+                <li>{isRTL ? '• للتنفيذ الحقيقي، ثبّت Nextflow محلياً أو استخدم منصة سحابية' : '• For real execution, install Nextflow locally or use a cloud platform'}</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

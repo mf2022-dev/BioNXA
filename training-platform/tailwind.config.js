@@ -5,74 +5,40 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Vibrant gradient colors for an attractive learning platform
-        primary: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6', // Main teal
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
-        },
-        secondary: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef', // Main purple
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75',
-        },
+        // BioNXA Design System - Deep Ocean Theme
         accent: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316', // Main orange
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
+          cyan: { DEFAULT: '#00f0ff', light: '#0099cc' },
+          violet: { DEFAULT: '#b44aff', light: '#8833cc' },
+          rose: { DEFAULT: '#ff4a8d', light: '#cc3366' },
+          mint: { DEFAULT: '#4aff91', light: '#33aa66' },
+          amber: { DEFAULT: '#ffb84a', light: '#cc8833' },
         },
+        // Semantic colors
         success: '#10b981',
         warning: '#f59e0b',
         error: '#ef4444',
         info: '#3b82f6',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Poppins', 'system-ui', 'sans-serif'],
+        sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-flow': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        'gradient-sunset': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-        'gradient-ocean': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        'gradient-green': 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-        'gradient-purple': 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-        'dna-pattern': "url('/dna-pattern.svg')",
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
-        'slide-up': 'slideUp 0.5s ease-out',
+        'slide-up': 'slideUp 0.6s ease-out',
         'slide-down': 'slideDown 0.5s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
-        'shimmer': 'shimmer 2s linear infinite',
+        'shimmer': 'shimmer 3s linear infinite',
+        'marquee': 'marquee 25s linear infinite',
+        'fade-in': 'fadeIn 0.6s ease both',
+        'blink': 'blink 1s infinite',
       },
       keyframes: {
         float: {
@@ -80,15 +46,15 @@ module.exports = {
           '50%': { transform: 'translateY(-20px)' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 5px #14b8a6, 0 0 10px #14b8a6' },
-          '100%': { boxShadow: '0 0 20px #14b8a6, 0 0 30px #14b8a6, 0 0 40px #14b8a6' },
+          '0%': { boxShadow: '0 0 5px rgba(0,240,255,0.3)' },
+          '100%': { boxShadow: '0 0 20px rgba(0,240,255,0.5), 0 0 40px rgba(0,240,255,0.2)' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(100px)', opacity: '0' },
+          '0%': { transform: 'translateY(30px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         slideDown: {
-          '0%': { transform: 'translateY(-100px)', opacity: '0' },
+          '0%': { transform: 'translateY(-30px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         scaleIn: {
@@ -96,16 +62,27 @@ module.exports = {
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
         shimmer: {
-          '0%': { backgroundPosition: '-1000px 0' },
-          '100%': { backgroundPosition: '1000px 0' },
+          '0%': { backgroundPosition: '0% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
         },
       },
       boxShadow: {
-        'glow-sm': '0 0 10px rgba(20, 184, 166, 0.5)',
-        'glow-md': '0 0 20px rgba(20, 184, 166, 0.6)',
-        'glow-lg': '0 0 30px rgba(20, 184, 166, 0.7)',
-        'glow-purple': '0 0 30px rgba(217, 70, 239, 0.6)',
-        'glow-orange': '0 0 30px rgba(249, 115, 22, 0.6)',
+        'glow-cyan': '0 0 30px rgba(0, 240, 255, 0.3)',
+        'glow-violet': '0 0 30px rgba(180, 74, 255, 0.3)',
+        'glow-rose': '0 0 30px rgba(255, 74, 141, 0.3)',
+        'glow-mint': '0 0 30px rgba(74, 255, 145, 0.3)',
       },
     },
   },

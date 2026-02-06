@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   // Allow cross-origin requests for development
   experimental: {
-    allowedDevOrigins: ['sandbox.novita.ai'],
+    allowedDevOrigins: ['sandbox.novita.ai', 'localhost', '0.0.0.0'],
   },
   webpack: (config) => {
     config.resolve.fallback = {
