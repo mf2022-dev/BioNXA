@@ -1,8 +1,10 @@
-.next
 node_modules
+.next
 out
-public
-*.md
+build
+dist
+coverage
+*.log
+.git
+.env*
 package-lock.json
-pnpm-lock.yaml
-yarn.lock

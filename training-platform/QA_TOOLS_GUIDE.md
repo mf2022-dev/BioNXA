@@ -1,87 +1,142 @@
 # 🛠️ Quality Assurance Tools Guide
 
 ## Overview
-This document outlines all QA tools configured for the BioNXA Learning Platform to ensure code quality, prevent bugs, and maintain high standards.
+This document describes all QA tools installed to ensure code quality, prevent bugs, and maintain standards.
 
 ---
 
-## 🔍 **1. ESLint - Code Quality**
+## 🔍 **Installed QA Tools**
 
-### What it does:
-- Catches common JavaScript/TypeScript errors
-- Enforces code style consistency
-- Identifies problematic patterns
+### 1. **ESLint** - Code Quality & Style Enforcement
+**Purpose:** Catches bugs, enforces coding standards, identifies problematic patterns
 
-### How to use:
+**Configuration:** `.eslintrc.json`
+
+**Usage:**
 ```bash
-# Check for issues
-npm run lint
-
-# Auto-fix issues
-npm run lint:fix
+npm run lint          # Check for issues
+npm run lint:fix      # Auto-fix issues
 ```
 
-### Configuration:
-- File: `.eslintrc.json`
-- Rules: Strict TypeScript, React best practices
-- Plugins: TypeScript, React, React Hooks
+**What it checks:**
+- TypeScript errors
+- React best practices
+- Unused variables
+- Missing dependencies in hooks
+- Console.log statements (warns)
 
 ---
 
-## 💅 **2. Prettier - Code Formatting**
+### 2. **Prettier** - Code Formatting
+**Purpose:** Automatic code formatting for consistent style
 
-### What it does:
-- Auto-formats code for consistency
-- Removes style debates from code reviews
-- Integrates with ESLint
+**Configuration:** `.prettierrc.json`
 
-### How to use:
+**Usage:**
 ```bash
-# Format all files
-npm run format
-
-# Check formatting
-npm run format:check
+npm run format        # Format all files
+npm run format:check  # Check formatting
 ```
 
-### Configuration:
-- File: `.prettierrc.json`
-- Settings: Single quotes, no semicolons, 100 char width
+**Standards:**
+- Single quotes
+- No semicolons
+- 100 character line width
+- 2 spaces indentation
 
 ---
 
-## 🧪 **3. Jest - Unit Testing**
+### 3. **TypeScript** - Type Safety
+**Purpose:** Compile-time type checking
 
-### What it does:
-- Tests individual functions and components
-- Measures code coverage
-- Catches regressions early
+**Configuration:** `tsconfig.json`
 
-### How to use:
+**Usage:**
 ```bash
-# Run tests in watch mode
-npm run test
-
-# Run all tests once (CI mode)
-npm run test:ci
-
-# Run with coverage report
-npm run test:ci
+npm run type-check    # Check types without building
 ```
 
-### Configuration:
-- File: `jest.config.js`
-- Setup: `jest.setup.js`
-- Tests location: `__tests__/`
-- Coverage threshold: 50% (branches, functions, lines, statements)
+**Benefits:**
+- Catch type errors before runtime
+- Better IDE autocomplete
+- Safer refactoring
 
-### Example Test:
+---
+
+### 4. **Husky** - Git Hooks
+**Purpose:** Runs checks automatically before commits
+
+**Configuration:** `.husky/` directory
+
+**What it does:**
+- Runs linting before commit
+- Runs formatting before commit
+- Validates commit messages
+
+**Prevents:**
+- Committing broken code
+- Committing unformatted code
+- Bad commit messages
+
+---
+
+### 5. **lint-staged** - Pre-commit File Checker
+**Purpose:** Only checks files being committed (faster)
+
+**Configuration:** `.lintstagedrc.json`
+
+**Runs on commit:**
+1. ESLint on JS/TS files
+2. Prettier on all staged files
+3. Auto-fixes when possible
+
+---
+
+### 6. **Commitlint** - Commit Message Standards
+**Purpose:** Enforces conventional commit format
+
+**Configuration:** `commitlint.config.js`
+
+**Valid commit types:**
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation
+- `style:` - Code style (formatting)
+- `refactor:` - Code restructuring
+- `test:` - Adding tests
+- `chore:` - Maintenance
+
+**Example:**
+```bash
+git commit -m "feat(auth): add OAuth support"
+git commit -m "fix(dashboard): resolve redirect loop"
+```
+
+---
+
+### 7. **Jest** - Unit Testing Framework
+**Purpose:** Test individual functions and components
+
+**Configuration:** `jest.config.js`
+
+**Usage:**
+```bash
+npm test              # Run tests in watch mode
+npm run test:ci       # Run once with coverage
+```
+
+**What to test:**
+- Utility functions
+- Component rendering
+- User interactions
+- Edge cases
+
+**Example test:**
 ```typescript
-// __tests__/lib/supabase.test.ts
 import { isSupabaseConfigured } from '@/lib/supabase'
 
-describe('Supabase Client', () => {
-  it('should be configured', () => {
+describe('Supabase', () => {
+  it('should detect configuration', () => {
     expect(typeof isSupabaseConfigured).toBe('boolean')
   })
 })
@@ -89,262 +144,185 @@ describe('Supabase Client', () => {
 
 ---
 
-## 🎭 **4. Playwright - E2E Testing**
+### 8. **React Testing Library** - Component Testing
+**Purpose:** Test React components like users interact with them
 
-### What it does:
-- Tests complete user workflows
-- Validates UI across browsers
-- Screenshots on failures
-
-### How to use:
-```bash
-# Run E2E tests
-npm run test:e2e
-
-# Run with UI (interactive)
-npm run test:e2e:ui
-
-# Run specific test
-npx playwright test e2e/homepage.spec.ts
-```
-
-### Configuration:
-- File: `playwright.config.ts`
-- Tests location: `e2e/`
-- Browsers: Chromium, Mobile Chrome
-- Auto-starts dev server
-
-### Example Test:
+**Usage:**
 ```typescript
-// e2e/homepage.spec.ts
-import { test, expect } from '@playwright/test'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-test('homepage loads', async ({ page }) => {
-  await page.goto('/en')
-  await expect(page).toHaveTitle(/BioNXA/)
+test('button click', async () => {
+  render(<Button>Click me</Button>)
+  await userEvent.click(screen.getByRole('button'))
+  expect(screen.getByText('Clicked')).toBeInTheDocument()
 })
 ```
 
 ---
 
-## 🪝 **5. Husky - Git Hooks**
+### 9. **GitHub Actions** - CI/CD Pipeline
+**Purpose:** Automated testing on every push/PR
 
-### What it does:
-- Runs checks before commits
-- Prevents bad code from being committed
-- Auto-fixes issues when possible
+**Configuration:** `.github/workflows/ci.yml`
 
-### How it works:
-- Automatically runs on `git commit`
-- Uses `lint-staged` to check only changed files
-- Blocks commit if checks fail
+**Pipeline steps:**
+1. Install dependencies
+2. Run ESLint
+3. Run Prettier check
+4. Run TypeScript check
+5. Run all tests with coverage
+6. Build project
+7. Upload artifacts
 
-### Configuration:
-- Directory: `.husky/`
-- Config: `.lintstagedrc.json`
-- Hooks: pre-commit (lint + format)
+**Triggers:**
+- Every push to `main` or `genspark_ai_developer`
+- Every pull request to `main`
 
----
-
-## 🚀 **6. GitHub Actions - CI/CD**
-
-### What it does:
-- Runs all tests on every push
-- Validates builds
-- Security audits
-- Automated deployment checks
-
-### Workflow Jobs:
-1. **Lint & Type Check** - ESLint + TypeScript validation
-2. **Unit Tests** - Jest with coverage upload
-3. **E2E Tests** - Playwright automated browser testing
-4. **Build Check** - Ensures production build succeeds
-5. **Security Audit** - npm audit for vulnerabilities
-
-### Configuration:
-- File: `.github/workflows/ci.yml`
-- Triggers: Push to main/dev branches, Pull Requests
-- Reports: Coverage, test results, build artifacts
+**Benefits:**
+- Catches issues before merge
+- Ensures build succeeds
+- Tracks code coverage
 
 ---
 
-## 📊 **7. TypeScript Strict Mode**
+## 📋 **QA Workflow**
 
-### What it does:
-- Catches type errors at compile time
-- Enforces strict null checks
-- Prevents `any` type abuse
-
-### How to use:
+### Before You Code
 ```bash
-# Check types
-npm run type-check
-
-# During development (automatic)
-# TypeScript errors show in your IDE
+npm run dev           # Start development server
 ```
 
-### Configuration:
-- File: `tsconfig.json`
-- Mode: Strict enabled
-- Integration: VS Code, WebStorm, etc.
+### While Coding
+- VS Code will show ESLint warnings in real-time
+- Prettier will format on save (if configured in VS Code)
 
----
-
-## 🔐 **8. Security Tools**
-
-### npm audit
+### Before Committing
 ```bash
-# Check for vulnerabilities
-npm audit
-
-# Auto-fix (be careful!)
-npm audit fix
-
-# Fix with breaking changes
-npm audit fix --force
+npm run validate      # Run all checks
 ```
 
-### Dependabot (GitHub)
-- Automatically creates PRs for dependency updates
-- Security vulnerability alerts
-- Configured in: `.github/dependabot.yml` (optional)
+**What happens automatically:**
+1. Git hook runs lint-staged
+2. ESLint checks your code
+3. Prettier formats your code
+4. If errors: commit blocked
+5. If success: commit proceeds
 
----
-
-## 📈 **9. Code Coverage**
-
-### What it tracks:
-- Lines covered by tests
-- Branches tested
-- Functions tested
-- Statements executed
-
-### How to view:
+### Before Creating PR
 ```bash
-# Run tests with coverage
-npm run test:ci
-
-# Open HTML report
-open coverage/lcov-report/index.html
+npm run test:ci       # Run full test suite
+npm run build         # Ensure build works
 ```
 
-### Thresholds:
-- Branches: 50%
-- Functions: 50%
-- Lines: 50%
-- Statements: 50%
+### After Creating PR
+- GitHub Actions automatically runs full CI/CD
+- PR cannot merge if CI fails
+- Review coverage report
 
 ---
 
-## 🎯 **10. Running All Checks**
+## 🎯 **Quality Standards**
 
-### Before committing:
+### Code Quality Metrics
+- **ESLint:** 0 errors
+- **TypeScript:** 0 type errors
+- **Test Coverage:** >80% (goal)
+- **Build:** Success
+
+### Commit Standards
+- Use conventional commits
+- Write descriptive messages
+- Keep commits atomic (one feature/fix per commit)
+
+### PR Standards
+- All CI checks passing
+- Code reviewed by at least 1 person
+- Tests added for new features
+- Documentation updated
+
+---
+
+## 🚀 **Quick Commands**
+
 ```bash
-# Run everything
-npm run validate
+# Development
+npm run dev                    # Start dev server
+
+# Quality Checks
+npm run lint                   # Check code quality
+npm run format                 # Format code
+npm run type-check            # Check types
+npm run validate              # Run all checks
+
+# Testing
+npm test                       # Run tests (watch)
+npm run test:ci               # Run tests once
+npm run test:e2e              # Run E2E tests
+
+# Build
+npm run build                  # Production build
 ```
 
-This runs:
-1. ESLint
-2. TypeScript type checking
-3. Jest unit tests with coverage
+---
 
-### Before deploying:
+## 🐛 **Troubleshooting**
+
+### "Husky hooks not working"
 ```bash
-# Full test suite
-npm run test:all
+npx husky install
 ```
 
-This runs:
-1. ESLint
-2. Jest unit tests
-3. Playwright E2E tests
+### "ESLint errors after pull"
+```bash
+npm run lint:fix
+```
 
----
+### "Prettier conflicts with ESLint"
+- Both are configured to work together
+- Run `npm run format` followed by `npm run lint:fix`
 
-## 🔄 **Development Workflow**
-
-### Daily Development:
-1. Make changes to code
-2. Tests run automatically in watch mode (optional)
-3. On `git commit`: Husky runs lint + format
-4. Push to GitHub: CI/CD pipeline runs all checks
-
-### Pre-deployment:
-1. Run `npm run validate` locally
-2. Run `npm run test:e2e` to verify E2E
-3. Push to branch
-4. Wait for GitHub Actions to pass
-5. Merge PR (all checks must be green)
-
----
-
-## 📋 **Quick Commands Reference**
-
-| Task | Command |
-|------|---------|
-| Lint code | `npm run lint` |
-| Fix lint issues | `npm run lint:fix` |
-| Format code | `npm run format` |
-| Run unit tests | `npm run test` |
-| Run E2E tests | `npm run test:e2e` |
-| Type check | `npm run type-check` |
-| Run all checks | `npm run validate` |
-| Full test suite | `npm run test:all` |
-| View coverage | `open coverage/lcov-report/index.html` |
-
----
-
-## 🚨 **Common Issues & Solutions**
-
-### Issue: Lint errors on commit
-**Solution:** Run `npm run lint:fix` before committing
-
-### Issue: Tests failing in CI but passing locally
-**Solution:** Run `npm run test:ci` locally to match CI environment
-
-### Issue: E2E tests timing out
-**Solution:** Increase timeout in `playwright.config.ts` or check server startup
-
-### Issue: Husky hooks not running
-**Solution:** Run `npx husky install` to reinstall hooks
-
-### Issue: Type errors in tests
-**Solution:** Check `tsconfig.json` includes test files
+### "Tests failing on CI but passing locally"
+```bash
+npm run test:ci              # Run in CI mode locally
+```
 
 ---
 
 ## 📚 **Additional Resources**
 
-- ESLint: https://eslint.org/docs/latest/
-- Prettier: https://prettier.io/docs/en/
-- Jest: https://jestjs.io/docs/getting-started
-- Playwright: https://playwright.dev/docs/intro
-- Husky: https://typicode.github.io/husky/
-- GitHub Actions: https://docs.github.com/en/actions
+- **ESLint:** https://eslint.org/docs/latest/
+- **Prettier:** https://prettier.io/docs/en/
+- **Jest:** https://jestjs.io/docs/getting-started
+- **Testing Library:** https://testing-library.com/docs/react-testing-library/intro/
+- **Conventional Commits:** https://www.conventionalcommits.org/
 
 ---
 
-## ✅ **Maintenance Checklist**
+## 🎓 **Best Practices**
 
-### Weekly:
-- [ ] Review and fix any deprecation warnings
-- [ ] Check for outdated packages (`npm outdated`)
-- [ ] Review test coverage reports
+1. **Write tests first** (TDD when possible)
+2. **Run `npm run validate`** before pushing
+3. **Fix linting warnings** immediately
+4. **Keep test coverage high**
+5. **Use meaningful commit messages**
+6. **Review your own PR** before requesting reviews
+7. **Never commit broken code**
+8. **Update tests when changing code**
 
-### Monthly:
-- [ ] Update dependencies (`npm update`)
-- [ ] Review and update ESLint rules
-- [ ] Add tests for new features
-- [ ] Update this documentation
+---
 
-### Before Major Releases:
-- [ ] Run full test suite
-- [ ] Manual QA testing
-- [ ] Security audit
-- [ ] Performance testing
-- [ ] Accessibility audit
+## ✅ **Success Checklist**
+
+Before considering a feature "done":
+- [ ] Code passes ESLint
+- [ ] Code is formatted with Prettier
+- [ ] TypeScript compiles without errors
+- [ ] All tests pass
+- [ ] New tests added for new features
+- [ ] Documentation updated
+- [ ] CI/CD pipeline passes
+- [ ] PR created with descriptive title/description
 
 ---
 
