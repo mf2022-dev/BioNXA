@@ -50,6 +50,14 @@
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
+## 🏗️ Architecture
+
+BioNXA is built with a modern, scalable architecture:
+
+- **Frontend:** The BioNXA learning platform itself, built with Next.js and Tailwind CSS.
+- **Backend:** Supabase for database, authentication, and storage.
+- **Bioinformatics Engine:** The official Nextflow engine is included as a Git submodule in the `nextflow-engine/` directory. This allows BioNXA to execute real bioinformatics workflows.
+
 ## 🛠️ Tech Stack
 
 - **Framework:** [Next.js 14](https://nextjs.org/)
