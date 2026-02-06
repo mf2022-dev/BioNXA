@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "training-platform/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "rootDir": "training-platform"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "training-platform/$1"
+    }
+  ]
+}
