@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Dna, Gamepad2, BookOpen, Flask, Compass, Code, Star, Play, X } from 'lucide-react';
+import { ArrowLeft, Dna, Gamepad2, BookOpen, Beaker, Compass, Code, Star, Play, X } from 'lucide-react';
 import Link from 'next/link';
 
 // Import all creative onboarding components
@@ -69,7 +69,7 @@ const approaches: Approach[] = [
     name: 'Find Your Lab Bench',
     description: 'Spatial metaphor with virtual lab workstations to explore',
     features: ['3D lab environment', 'Spatial navigation', 'Equipment listings', 'Interactive stations'],
-    icon: <Flask className="w-8 h-8" />,
+    icon: <Beaker className="w-8 h-8" />,
     color: 'from-cyan-500 to-blue-600',
     component: <FindYourLabBench />,
     duration: '~40 seconds',

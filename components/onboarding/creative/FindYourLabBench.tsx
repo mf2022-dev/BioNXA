@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Microscope, Terminal, Dna, Cpu, BookOpen, Flask, Brain, Rocket } from 'lucide-react';
+import { Microscope, Terminal, Dna, Cpu, BookOpen, Beaker, Brain, Rocket } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { setUserSkillLevel } from '@/lib/userProfile';
 
@@ -103,7 +103,7 @@ export default function FindYourLabBench() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <Flask className="w-16 h-16 mx-auto mb-4 text-blue-400" />
+          <Beaker className="w-16 h-16 mx-auto mb-4 text-blue-400" />
           <h1 className="text-5xl font-bold text-white mb-4">
             Find Your Lab Bench
           </h1>

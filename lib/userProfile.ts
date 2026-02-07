@@ -258,3 +258,8 @@ export const UserProfileUtils = {
     localStorage.removeItem('bionxa_user_profile')
   },
 }
+
+// Convenience function for setting skill level (used in onboarding)
+export function setUserSkillLevel(level: SkillLevel): void {
+  UserProfileUtils.completeOnboarding(level)
+}
